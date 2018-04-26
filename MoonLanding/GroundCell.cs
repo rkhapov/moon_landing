@@ -1,6 +1,6 @@
 ﻿namespace MoonLanding
 {
-    public enum GroudCell
+    public enum GroundCell
     {
         Ground = 1,
         Empty

@@ -4,17 +4,18 @@ namespace MoonLanding.Tools
 {
     public class Vector
     {
-        public double X { get; private set; }
-        public double Y { get; private set; }
+        public double X { get; }
+        public double Y { get; }
 
-        private Vector()
+        private Vector(double x, double y)
         {
-            //nothing
+            X = x;
+            Y = y;
         }
 
         public static Vector Create(double x, double y)
         {
-            return new Vector { X = x, Y = y };
+            return new Vector(x, y);
         }
 
         public static Vector CreateZero()
@@ -23,6 +24,8 @@ namespace MoonLanding.Tools
         }
 
         public static Vector Zero { get; } = Create(0.0, 0.0);
+        public double Length => Math.Sqrt(X * X + Y * Y);
+        public double Angle => Math.Atan2(X, Y);
 
         public static Vector operator + (Vector v1, Vector v2)
         {
@@ -44,14 +47,23 @@ namespace MoonLanding.Tools
             return v * a;
         }
 
-        public static double Length(Vector v)
+        public override bool Equals(object obj)
         {
-            return Math.Sqrt(v.X * v.X + v.Y * v.Y);
+            if (ReferenceEquals(obj, null))
+                return false;
+            
+            if (ReferenceEquals(obj, this))
+                return true;
+
+            if (!(obj is Vector))
+                return false;
+
+            return Equals((Vector)obj);
         }
 
-        public static double Angle(Vector v)
+        protected bool Equals(Vector other)
         {
-            return Math.Atan2(v.X, v.Y);
+            return X.Equals(other.X) && Y.Equals(other.Y);
         }
     }
 }

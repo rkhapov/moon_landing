@@ -7,7 +7,7 @@ namespace MoonLanding.Physics
         Vector Velocity { get; set; }
         Vector Acceleration { get; set; }
         Vector Cords { get; set; }
-        Size Size { get; set; }
+        Size Size { get; }
         int Mass { get; set; }
 
         bool IntersectsWith(IPhysObject obj);

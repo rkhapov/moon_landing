@@ -30,12 +30,35 @@ namespace MoonLanding
             set { /*cant set mass of landscape*/ }
         }
         
-        public Size Size { get; set; }
+        public Size Size { get; }
 
+        private readonly GroundCell[,] landscape;
+
+        private Landscape(Size size)
+        {
+            Size = size;
+            landscape = new GroundCell[size.Height, size.Width];
+
+            for (var i = 0; i < size.Height; i++)
+            {
+                for (var j = 0; j < size.Width; j++)
+                    landscape[i, j] = GroundCell.Empty;
+            }
+        }
+
+        public GroundCell GetCell(int y, int x)
+        {
+            return landscape[y, x];
+        }
+
+        public void SetCell(int y, int x, GroundCell value)
+        {
+            landscape[y, x] = value;
+        }
 
         public static Landscape Create(Size size)
         {
-            return null;
+            return new Landscape(size);
         }
 
         public static Landscape LoadFromImage(string path)

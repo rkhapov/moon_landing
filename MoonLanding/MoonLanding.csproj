@@ -40,7 +40,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EntryPoint.cs" />
-    <Compile Include="GroudCell.cs" />
+    <Compile Include="GroundCell.cs" />
     <Compile Include="Landscape.cs" />
     <Compile Include="Physics\IPhysObject.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
