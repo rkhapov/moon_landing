@@ -1,4 +1,6 @@
-﻿namespace MoonLanding.Tools
+﻿using System;
+
+namespace MoonLanding.Tools
 {
     public class Vector
     {
@@ -14,6 +16,13 @@
         {
             return new Vector { X = x, Y = y };
         }
+
+        public static Vector CreateZero()
+        {
+            return Create(0.0, 0.0);
+        }
+
+        public static Vector Zero { get; } = Create(0.0, 0.0);
 
         public static Vector operator +(Vector v1, Vector v2)
         {

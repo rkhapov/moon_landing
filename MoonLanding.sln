@@ -2,6 +2,8 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoonLanding", "MoonLanding\MoonLanding.csproj", "{3E416580-E896-43B5-9F14-55B158461B34}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoonLanding.Tests", "MoonLanding.Tests\MoonLanding.Tests.csproj", "{48570BA9-412E-4794-90B8-4BA34148601C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +14,9 @@ Global
 		{3E416580-E896-43B5-9F14-55B158461B34}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3E416580-E896-43B5-9F14-55B158461B34}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3E416580-E896-43B5-9F14-55B158461B34}.Release|Any CPU.Build.0 = Release|Any CPU
+		{48570BA9-412E-4794-90B8-4BA34148601C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{48570BA9-412E-4794-90B8-4BA34148601C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{48570BA9-412E-4794-90B8-4BA34148601C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{48570BA9-412E-4794-90B8-4BA34148601C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
