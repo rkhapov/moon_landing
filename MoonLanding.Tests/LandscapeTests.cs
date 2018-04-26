@@ -77,7 +77,27 @@ namespace MoonLanding.Tests
         [Test]
         public void GetCellSetCell_WorkingWithValues_ShouldReturnRightValues()
         {
+            var random = new Random();
+            var landscape = Landscape.Create(Size.Create((uint)random.Next(10, 100), (uint)random.Next(10, 100)));
+            var exceptedLandscape = new GroundCell[landscape.Size.Height, landscape.Size.Width];
+
+            for (var i = 0; i < landscape.Size.Height; i++)
+            {
+                for (var j = 0; j < landscape.Size.Width; j++)
+                {
+                    exceptedLandscape[i, j] = random.Next(1, 2) == 1 ? GroundCell.Empty : GroundCell.Ground;
+                    landscape.SetCell(i, j, exceptedLandscape[i, j]);
+                }
+            }
             
+            
+            for (var i = 0; i < landscape.Size.Height; i++)
+            {
+                for (var j = 0; j < landscape.Size.Width; j++)
+                {
+                    landscape.GetCell(i, j).Should().BeEquivalentTo(exceptedLandscape[i, j]);
+                }
+            }
         }
     }
 }
