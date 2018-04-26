@@ -17,13 +17,6 @@ namespace MoonLanding.Tools
             return new Vector { X = x, Y = y };
         }
 
-        public static Vector CreateZero()
-        {
-            return Create(0.0, 0.0);
-        }
-
-        public static Vector Zero { get; } = Create(0.0, 0.0);
-
         public static Vector operator + (Vector v1, Vector v2)
         {
             return Vector.Create(v1.X + v2.X, v1.Y + v2.Y);
