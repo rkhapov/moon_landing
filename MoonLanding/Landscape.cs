@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using MoonLanding.Physics;
 using MoonLanding.Tools;
 
@@ -50,15 +51,37 @@ namespace MoonLanding
         {
             return landscape[y, x];
         }
-
-        public void SetCell(int y, int x, GroundCell value)
+        
+        public Landscape SetCell(int y, int x, GroundCell value)
         {
             landscape[y, x] = value;
+            
+            return this;
+        }
+
+        public bool GroundAt(int y, int x)
+        {
+            return GetCell(y, x) == GroundCell.Ground;
+        }
+
+        public bool InBound(int y, int x)
+        {
+            return y >= 0 && y < Size.Height && x >= 0 && x < Size.Width;
         }
 
         public static Landscape Create(Size size)
         {
             return new Landscape(size);
+        }
+
+        public static Landscape CreateFromText(List<string> text)
+        {
+            if (text.Count == 0)
+                return Create(Size.Zero);
+            var landscape = Create(Size.Create(text[0].Length, text.Count));
+            landscape.FillWithText(text);
+
+            return landscape;
         }
 
         public static Landscape LoadFromImage(string path)
@@ -71,7 +94,23 @@ namespace MoonLanding
             if (obj is Landscape)
                 throw new ArgumentException("Cant intersect Landscape and Landscape");
 
+            for (var y = (int)Math.Ceiling(obj.Cords.Y); y < (int) obj.Cords.Y + obj.Size.Height; y++)
+            {
+                for (var x = (int)Math.Ceiling(obj.Cords.X); x < (int) obj.Cords.X + obj.Size.Width; x++)
+                    if (InBound(y, x) && GroundAt(y, x))
+                        return true;
+            }
+
             return false;
+        }
+        
+        private void FillWithText(List<string> text)
+        {
+            for (var i = 0; i < Size.Height; i++)
+            {
+                for (var j = 0; j < Size.Width; j++)
+                    landscape[i, j] = text[i][j] == '*' ? GroundCell.Ground : GroundCell.Empty;
+            }
         }
     }
 }

@@ -1,22 +1,27 @@
-﻿namespace MoonLanding.Tools
+﻿using System;
+
+namespace MoonLanding.Tools
 {
     public class Size
     {
-        public uint Width { get; }
-        public uint Height { get; }
+        public int Width { get; }
+        public int Height { get; }
 
         private Size()
         {
             //nothing
         }
 
-        public Size(uint width, uint height)
+        public Size(int width, int height)
         {
+            if (width < 0 || height < 0)
+                throw new ArgumentException("Size cant be negative");
+            
             Width = width;
             Height = height;
         }
 
-        public static Size Create(uint width, uint height)
+        public static Size Create(int width, int height)
         {
             return new Size(width, height);
         }
