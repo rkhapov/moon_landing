@@ -59,9 +59,14 @@ namespace MoonLanding.Tests
             yield return new TestCaseData(landscape, GetObjectWithSize(Vector.Create(26, 7), Size.Create(2, 2)), false).SetName("int 5");
             yield return new TestCaseData(landscape, GetObjectWithSize(Vector.Create(35, 9), Size.Create(5, 5)), true).SetName("int 6");
             yield return new TestCaseData(landscape, GetObjectWithSize(Vector.Create(26, 5), Size.Create(1, 1)), false).SetName("int 7");
+            yield return new TestCaseData(landscape, GetObjectWithSize(Vector.Create(-10, 20), Size.Create(100, 100)), false).SetName("int 8");
+            yield return new TestCaseData(landscape, GetObjectWithSize(Vector.Create(-10, 10), Size.Create(100, 100)), true).SetName("int 9");
+            yield return new TestCaseData(landscape, GetObjectWithSize(Vector.Create(35, 4), Size.Create(1, 1)), false).SetName("int 10");
             
             yield return new TestCaseData(landscape, GetObjectWithSize(Vector.Create(26.1, 5), Size.Create(1, 1)), true).SetName("double 1");
-            
+            yield return new TestCaseData(landscape, GetObjectWithSize(Vector.Create(-1, 5), Size.Create(10, 10)), true).SetName("double 2");
+            yield return new TestCaseData(landscape, GetObjectWithSize(Vector.Create(26.7, 7), Size.Create(1, 1)), false).SetName("double 3");
+            yield return new TestCaseData(landscape, GetObjectWithSize(Vector.Create(26, 7.1), Size.Create(1, 1)), false).SetName("double 4");
         }
 
         [TestCaseSource(nameof(CreateSizeTestCases))]

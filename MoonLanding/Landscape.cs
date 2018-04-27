@@ -94,11 +94,16 @@ namespace MoonLanding
             if (obj is Landscape)
                 throw new ArgumentException("Cant intersect Landscape and Landscape");
 
-            for (var y = (int)Math.Ceiling(obj.Cords.Y); y < (int) obj.Cords.Y + obj.Size.Height; y++)
+            for (var y = (int)Math.Ceiling(obj.Cords.Y); y < (int)Math.Ceiling(obj.Cords.Y) + obj.Size.Height; y++)
             {
-                for (var x = (int)Math.Ceiling(obj.Cords.X); x < (int) obj.Cords.X + obj.Size.Width; x++)
-                    if (InBound(y, x) && GroundAt(y, x))
+                for (var x = (int) Math.Ceiling(obj.Cords.X); x < (int) Math.Ceiling(obj.Cords.X) + obj.Size.Width; x++)
+                {
+                    if (!InBound(y, x))
+                        continue;
+                    
+                    if (GroundAt(y, x))
                         return true;
+                }
             }
 
             return false;
