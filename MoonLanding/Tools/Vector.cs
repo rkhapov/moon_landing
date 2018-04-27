@@ -65,5 +65,11 @@ namespace MoonLanding.Tools
         {
             return X.Equals(other.X) && Y.Equals(other.Y);
         }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+
     }
 }

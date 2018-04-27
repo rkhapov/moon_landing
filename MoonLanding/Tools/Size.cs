@@ -41,5 +41,10 @@
         {
             return Width == other.Width && Height == other.Height;
         }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
     }
 }
