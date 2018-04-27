@@ -1,4 +1,6 @@
-﻿using FluentAssertions;
+﻿using System;
+using System.Collections.Generic;
+using FluentAssertions;
 using MoonLanding.Tools;
 using NUnit.Framework;
 
@@ -7,28 +9,62 @@ namespace MoonLanding.Tests
     [TestFixture]
     public class VectorTests
     {
-        [Test]
-        public void OperatorPlus_AddingTwoVectors_ShouldReturnSum()
+        private static readonly Random Random = new Random();
+        
+        private static double GetRandomDouble(double min = -100, double max = 100)
         {
-            var v1 = Vector.Create(5, 6);
-            var v2 = Vector.Create(-3, 10);
+            return Random.NextDouble() * (max - min) + min;
+        }
 
-            var sum = v1 + v2;
+        private static Vector GetRandomVector(double min = -100, double max = 100)
+        {
+            return Vector.Create(GetRandomDouble(min, max), GetRandomDouble(min, max));
+        }
+        
+        private static Tuple<Vector, Vector> GetRandomVectors()
+        {
+            return Tuple.Create(GetRandomVector(), GetRandomVector());
+        }
+        
+        [Test]
+        [Repeat(100)]
+        public void OperatorPlus_ShouldReturnSum()
+        {
+            var vectors = GetRandomVectors();
+            var expected = Vector.Create(vectors.Item1.X + vectors.Item2.X, vectors.Item1.Y + vectors.Item2.Y);
 
-            sum.X.Should().BeInRange(2 - 1e-6, 2 + 1e-6);
-            sum.Y.Should().BeInRange(16 - 1e-6, 16 + 1e-6);
+            var sut = vectors.Item1 + vectors.Item2;
+
+            sut.Should().BeEquivalentTo(expected);
         }
 
         [Test]
-        public void OperatorMinus_SubstractingTwoVectors_ShouldReturnSubstraction()
+        [Repeat(100)]
+        public void OperatorMinus_ShouldReturnSubstraction()
         {
-            var v1 = Vector.Create(5, 6);
-            var v2 = Vector.Create(-3, 10);
+            var vectors = GetRandomVectors();
+            var expected = Vector.Create(vectors.Item1.X - vectors.Item2.X, vectors.Item1.Y - vectors.Item2.Y);
 
-            var sub = v1 - v2;
+            var sut = vectors.Item1 - vectors.Item2;
 
-            sub.X.Should().BeInRange(8 - 1e-6, 8 + 1e-6);
-            sub.Y.Should().BeInRange(-4 - 1e-6, -4 + 1e-6);
+            sut.Should().BeEquivalentTo(expected);
+        }
+        
+        [Test]
+        [Repeat(100)]
+        public void OperatorScalarMul_ShouldReturnMultiplition()
+        {
+            var vector = GetRandomVector();
+            var scalar = GetRandomDouble();
+            var expected = Vector.Create(vector.X * scalar, vector.Y * scalar);
+            var expectedLength = vector.Length * Math.Abs(scalar);
+
+            var sut = vector * scalar;
+            var sut1 = scalar * vector;
+
+            sut1.Should().BeEquivalentTo(sut);
+            sut.Should().BeEquivalentTo(expected);
+            sut.Length.Should().BeInRange(expectedLength - 1e-6, expectedLength + 1e-6);
         }
     }
 }

@@ -75,6 +75,7 @@ namespace MoonLanding.Tests
         }
 
         [Test]
+        [Repeat(100)]
         public void GetCellSetCell_WorkingWithValues_ShouldReturnRightValues()
         {
             var random = new Random();

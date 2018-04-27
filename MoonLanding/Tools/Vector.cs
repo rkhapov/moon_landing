@@ -63,7 +63,12 @@ namespace MoonLanding.Tools
 
         protected bool Equals(Vector other)
         {
-            return X.Equals(other.X) && Y.Equals(other.Y);
+            return FloatEquals(X, other.X) && FloatEquals(Y, other.Y);
+        }
+
+        private bool FloatEquals(double f1, double f2)
+        {
+            return Math.Abs(f1 - f2) < 1e-6;
         }
 
         public override int GetHashCode()
