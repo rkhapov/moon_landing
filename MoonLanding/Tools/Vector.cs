@@ -68,7 +68,7 @@ namespace MoonLanding.Tools
 
         public override int GetHashCode()
         {
-            return base.GetHashCode();
+            return (X.GetHashCode() * 1037) ^ Y.GetHashCode();
         }
 
     }

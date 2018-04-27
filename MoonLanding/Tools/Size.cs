@@ -2,8 +2,8 @@
 {
     public class Size
     {
-        public uint Width { get; private set; }
-        public uint Height { get; private set; }
+        public uint Width { get; }
+        public uint Height { get; }
 
         private Size()
         {
@@ -18,7 +18,7 @@
 
         public static Size Create(uint width, uint height)
         {
-            return new Size() { Width = width, Height = height};
+            return new Size(width, height);
         }
 
         public static Size Zero { get; } = Create(0, 0);
@@ -44,7 +44,7 @@
 
         public override int GetHashCode()
         {
-            return base.GetHashCode();
+            return (Width.GetHashCode() * 1037) ^ Height.GetHashCode();
         }
     }
 }
