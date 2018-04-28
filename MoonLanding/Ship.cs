@@ -63,5 +63,10 @@ namespace MoonLanding
             Cords += Velocity * dt;
             Velocity = Acceleration * dt;
         }
+
+        void Die()
+        {
+            // ??
+        }
     }
 }
