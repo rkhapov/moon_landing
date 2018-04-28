@@ -1,7 +1,7 @@
-﻿using MoonLanding.Physics;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using Infrastructure.Objects;
 
-namespace MoonLanding
+namespace Infrastructure
 {
     public class Level
     {

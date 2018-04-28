@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
+using Infrastructure.Objects;
 
-namespace MoonLanding.Physics
+namespace Infrastructure.Physics
 {
     public abstract class Physics: IPhysics
     {

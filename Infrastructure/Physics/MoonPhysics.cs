@@ -1,6 +1,7 @@
-﻿using MoonLanding.Tools;
+﻿using Infrastructure.Objects;
+using Infrastructure.Tools;
 
-namespace MoonLanding.Physics
+namespace Infrastructure.Physics
 {
     public class MoonPhysics : Physics
     {

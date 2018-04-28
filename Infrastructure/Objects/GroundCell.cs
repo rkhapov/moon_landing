@@ -1,4 +1,4 @@
-﻿namespace MoonLanding
+﻿namespace Infrastructure.Objects
 {
     public enum GroundCell
     {

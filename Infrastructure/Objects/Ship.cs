@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MoonLanding.Physics;
-using MoonLanding.Tools;
+﻿using Infrastructure.Tools;
 
-namespace MoonLanding
+namespace Infrastructure.Objects
 {
-    class Ship : IPhysObject
+    public class Ship : IPhysObject
     {
         public double Fuel { get; private set; }
         public Vector Direction { get; set; }

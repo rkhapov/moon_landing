@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Runtime.Serialization;
 using FluentAssertions;
-using MoonLanding.Physics;
-using MoonLanding.Tools;
-using NUnit.Framework;
+using Infrastructure.Objects;
+using Infrastructure.Tools;
 using NSubstitute;
-using NSubstitute.Exceptions;
+using NUnit.Framework;
 
-namespace MoonLanding.Tests
+namespace Infrastructure.Tests
 {
     [TestFixture]
     public class LandscapeTests

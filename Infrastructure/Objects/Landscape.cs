@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using MoonLanding.Tools;
+using Infrastructure.Tools;
 
-namespace MoonLanding.Physics
+namespace Infrastructure.Objects
 {
     public class Landscape : IPhysObject
     {

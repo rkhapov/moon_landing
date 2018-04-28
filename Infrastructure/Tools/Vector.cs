@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MoonLanding.Tools
+namespace Infrastructure.Tools
 {
     public class Vector
     {
@@ -58,7 +58,7 @@ namespace MoonLanding.Tools
             if (!(obj is Vector))
                 return false;
 
-            return Equals((Vector)obj);
+            return Equals((Vector) obj);
         }
 
         protected bool Equals(Vector other)
@@ -78,8 +78,8 @@ namespace MoonLanding.Tools
 
         public Vector Rotate(double angle)
         {
-            return Vector.Create(X * Math.Cos(angle) - Y * Math.Sin(angle),
-                                     X * Math.Sin(angle) - Y * Math.Cos(angle));
+            return Create(X * Math.Cos(angle) - Y * Math.Sin(angle),
+                X * Math.Sin(angle) - Y * Math.Cos(angle));
         }
     }
 }

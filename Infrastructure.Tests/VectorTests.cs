@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using FluentAssertions;
-using MoonLanding.Tools;
+using Infrastructure.Tools;
 using NUnit.Framework;
 
-namespace MoonLanding.Tests
+namespace Infrastructure.Tests
 {
     [TestFixture]
     public class VectorTests

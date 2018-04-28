@@ -6,7 +6,7 @@ namespace MoonLanding
     {
         public static void Main(string[] args)
         {
-            Console.WriteLine((int)Math.Ceiling(26.1));
+            throw new NotImplementedException();
         }
     }
 }

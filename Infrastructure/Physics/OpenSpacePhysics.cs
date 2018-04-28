@@ -1,4 +1,4 @@
-﻿namespace MoonLanding.Physics
+﻿namespace Infrastructure.Physics
 {
     public class OpenSpacePhysics : Physics
     {

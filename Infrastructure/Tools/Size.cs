@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MoonLanding.Tools
+namespace Infrastructure.Tools
 {
     public class Size
     {

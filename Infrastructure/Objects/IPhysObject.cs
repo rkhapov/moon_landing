@@ -1,7 +1,6 @@
-﻿using MoonLanding.Tools;
-using System.Runtime.Serialization;
+﻿using Infrastructure.Tools;
 
-namespace MoonLanding.Physics
+namespace Infrastructure.Objects
 {
     public interface IPhysObject
     {
