@@ -27,17 +27,17 @@ namespace MoonLanding.Tools
         public double Length => Math.Sqrt(X * X + Y * Y);
         public double Angle => Math.Atan2(X, Y);
 
-        public static Vector operator + (Vector v1, Vector v2)
+        public static Vector operator +(Vector v1, Vector v2)
         {
-            return Vector.Create(v1.X + v2.X, v1.Y + v2.Y);
+            return Create(v1.X + v2.X, v1.Y + v2.Y);
         }
 
-        public static Vector operator - (Vector v1, Vector v2)
+        public static Vector operator -(Vector v1, Vector v2)
         {
             return Create(v1.X - v2.X, v1.Y - v2.Y);
         }
 
-        public static Vector operator * (Vector v, double a)
+        public static Vector operator *(Vector v, double a)
         {
             return Create(v.X * a, v.Y * a);
         }
@@ -51,7 +51,7 @@ namespace MoonLanding.Tools
         {
             if (ReferenceEquals(obj, null))
                 return false;
-            
+
             if (ReferenceEquals(obj, this))
                 return true;
 

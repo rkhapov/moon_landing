@@ -1,4 +1,5 @@
 ﻿using MoonLanding.Tools;
+using System.Runtime.Serialization;
 
 namespace MoonLanding.Physics
 {
@@ -9,7 +10,9 @@ namespace MoonLanding.Physics
         Vector Cords { get; set; }
         Size Size { get; }
         int Mass { get; set; }
+
         void Update(double dt);
         bool IntersectsWith(IPhysObject obj);
+        //void Serialize(IPhysObject obj);
     }
 }

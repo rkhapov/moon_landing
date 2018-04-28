@@ -35,14 +35,14 @@ namespace MoonLanding
             Mass = mass;
         }
 
-        public static Ship Create (double fuel, Size size, Vector cords, int mass)
+        public static Ship Create(double fuel, Size size, Vector cords, int mass)
         {
             return new Ship(fuel, size, cords, mass);
         }
 
         public bool IntersectsWith(IPhysObject obj)
         {
-            return (Cords == obj.Cords);
+            return Cords == obj.Cords;
         }
 
         public void ChangeDirection(double angle)
@@ -55,13 +55,13 @@ namespace MoonLanding
             double fuelConsumption = 1;
             Vector engineAcceleration = Vector.Create(1, 0).Rotate(Direction.Angle); // ???
             Acceleration += engineAcceleration * dt;
-            Fuel -= fuelConsumption*dt;
+            Fuel -= fuelConsumption * dt;
         }
 
         void IPhysObject.Update(double dt)
         {
-            Cords += Velocity*dt;
-            Velocity = Acceleration * dt; 
+            Cords += Velocity * dt;
+            Velocity = Acceleration * dt;
         }
     }
 }

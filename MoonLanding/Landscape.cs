@@ -30,7 +30,12 @@ namespace MoonLanding
             get => 0;
             set { /*cant set mass of landscape*/ }
         }
-        
+
+        void IPhysObject.Update(double dt)
+        {
+            return; /* Is it normal? Landscape doesn't change with dt. ((c) Stepan) */
+        }
+
         public Size Size { get; }
 
         private readonly GroundCell[,] landscape;
