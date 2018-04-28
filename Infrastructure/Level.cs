@@ -6,6 +6,7 @@ namespace Infrastructure
     public class Level
     {
         public Landscape Landscape { get; }
+        // public Physics ...
         public List<IPhysObject> Objects { get; }
 
         private Level(Landscape landscape, List<IPhysObject> objects)

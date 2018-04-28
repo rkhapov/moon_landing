@@ -8,12 +8,14 @@ namespace Infrastructure
         public Vector StartPosition { get; set; }
         public Vector StartVelocity { get; set; }
         public double StartFuel { get; set; }
+        public string Physics { get; set; }
 
-        public LevelInfo(Vector startPosition, Vector startVelocity, double startFuel)
+        public LevelInfo(Vector startPosition, Vector startVelocity, double startFuel, string physics)
         {
             StartPosition = startPosition;
             StartVelocity = startVelocity;
             StartFuel = startFuel;
+            Physics = physics;
         }
 
         public LevelInfo(string path)
@@ -24,6 +26,7 @@ namespace Infrastructure
                 StartPosition = ReadVector(lines[0].Split());
                 StartVelocity = ReadVector(lines[1].Split());
                 StartFuel = double.Parse(lines[2]);
+                Physics = lines[3];
             }
             catch
             {
@@ -38,7 +41,7 @@ namespace Infrastructure
 
         private string[] ToStringArray()
         {
-            return new string[] { StartPosition.ToString(), StartVelocity.ToString(), StartFuel.ToString() };
+            return new string[] { StartPosition.ToString(), StartVelocity.ToString(), StartFuel.ToString(), Physics };
         }
 
         public void WriteLevelInFile(LevelInfo levelInfo, string fileName)

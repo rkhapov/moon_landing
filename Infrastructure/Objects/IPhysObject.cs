@@ -12,6 +12,6 @@ namespace Infrastructure.Objects
 
         void Update(double dt);
         bool IntersectsWith(IPhysObject obj);
-        //void Serialize(IPhysObject obj);
+        //void Serialize(IPhysObject obj); // We will do it later
     }
 }
