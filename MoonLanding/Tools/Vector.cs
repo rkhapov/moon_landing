@@ -76,5 +76,10 @@ namespace MoonLanding.Tools
             return (X.GetHashCode() * 1037) ^ Y.GetHashCode();
         }
 
+        public Vector Rotate(double angle)
+        {
+            return Vector.Create(X * Math.Cos(angle) - Y * Math.Sin(angle),
+                                     X * Math.Sin(angle) - Y * Math.Cos(angle));
+        }
     }
 }
