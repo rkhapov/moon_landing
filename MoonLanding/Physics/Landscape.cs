@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using MoonLanding.Physics;
 using MoonLanding.Tools;
 
-namespace MoonLanding
+namespace MoonLanding.Physics
 {
     public class Landscape : IPhysObject
     {
@@ -30,13 +29,14 @@ namespace MoonLanding
             get => 0;
             set { /*cant set mass of landscape*/ }
         }
-
-        void IPhysObject.Update(double dt)
-        {
-            return; /* Is it normal? Landscape doesn't change with dt. ((c) Stepan) */
-        }
-
+        
         public Size Size { get; }
+
+        public void Update(double dt)
+        {
+            //nothing to do here
+            //landscape are static
+        }
 
         private readonly GroundCell[,] landscape;
 

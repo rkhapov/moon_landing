@@ -11,17 +11,11 @@ namespace MoonLanding
     class Ship : IPhysObject
     {
         public double Fuel { get; private set; }
-        
         public Vector Direction { get; set; }
-
         public Vector Velocity { get; set; }
-
         public Vector Acceleration { get; set; }
-
         public Vector Cords { get; set; }
-
         public Size Size { get; }
-
         public int Mass { get; set; }
 
         private Ship(double fuel, Size size, Vector cords, int mass)
