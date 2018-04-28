@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using FluentAssertions;
 using Infrastructure.Objects;
 using Infrastructure.Tools;
 using NSubstitute;
 using NUnit.Framework;
+using Size = Infrastructure.Tools.Size;
 
 namespace Infrastructure.Tests
 {
@@ -189,6 +191,38 @@ namespace Infrastructure.Tests
             var sut = landscape.IntersectsWith(obj);
 
             sut.Should().Be(expected);
+        }
+
+        [Test]
+        [Repeat(10)]
+        public void LoadFromImage_ValidImage_ShouldReturnRightLandscape()
+        {
+            var image = GetRandomImage();
+
+            var sut = Landscape.LoadFromImage(image);
+
+            for (var i = 0; i < image.Height; i++)
+            {
+                for (var j = 0; j < image.Width; j++)
+                {
+                    sut.GetCell(i, j).Should()
+                        .BeEquivalentTo(image.GetPixel(j, i) == Color.Black ? GroundCell.Ground : GroundCell.Empty);
+                }
+            }
+        }
+        
+        private static Bitmap GetRandomImage()
+        {
+            var random = new Random();
+            var image = new Bitmap(random.Next(10, 50), random.Next(10, 50));
+
+            for (var i = 0; i < image.Height; i++)
+            {
+                for (var j = 0; j < image.Width; j++)
+                    image.SetPixel(j, i, random.Next() % 2 == 1 ? Color.Black : Color.White);  
+            }
+
+            return image;
         }
     }
 }

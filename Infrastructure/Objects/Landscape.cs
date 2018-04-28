@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using Infrastructure.Tools;
+using Size = Infrastructure.Tools.Size;
 
 namespace Infrastructure.Objects
 {
@@ -84,14 +86,24 @@ namespace Infrastructure.Objects
             if (text.Count == 0)
                 return Create(Size.Zero);
             var landscape = Create(Size.Create(text[0].Length, text.Count));
-            landscape.FillWithText(text);
+            landscape.FillFromText(text);
 
             return landscape;
         }
 
-        public static Landscape LoadFromImage(string path)
+        public static Landscape LoadFromImageFile(string path)
         {
-            return null;
+            var image = new Bitmap(path);
+            
+            return LoadFromImage(image);
+        }
+
+        public static Landscape LoadFromImage(Bitmap image)
+        {
+            var landspace = Landscape.Create(Size.Create(image.Width, image.Height));
+            landspace.FillFromBitmap(image);
+
+            return landspace;
         }
 
         public bool IntersectsWith(IPhysObject obj)
@@ -114,12 +126,24 @@ namespace Infrastructure.Objects
             return false;
         }
         
-        private void FillWithText(List<string> text)
+        private void FillFromText(List<string> text)
         {
             for (var i = 0; i < Size.Height; i++)
             {
                 for (var j = 0; j < Size.Width; j++)
                     landscape[i, j] = text[i][j] == '*' ? GroundCell.Ground : GroundCell.Empty;
+            }
+        }
+
+        private void FillFromBitmap(Bitmap bitmap)
+        {
+            for (var i = 0; i < bitmap.Height; i++)
+            {
+                for (var j = 0; j < bitmap.Width; j++)
+                {
+                    if (bitmap.GetPixel(j, i) == Color.Black)
+                        SetCell(i, j, GroundCell.Ground);
+                }
             }
         }
     }
