@@ -42,6 +42,7 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="LevelInfo.cs" />
     <Compile Include="Level.cs" />
     <Compile Include="Objects\GroundCell.cs" />
     <Compile Include="Objects\IPhysObject.cs" />
