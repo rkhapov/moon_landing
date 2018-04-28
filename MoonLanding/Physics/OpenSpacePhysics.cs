@@ -4,7 +4,8 @@
     {
         public override void Update(double dt)
         {
-            //open space have no any physics
+            foreach (var obj in Objects)
+                obj.Update(dt);
         }
     }
 }

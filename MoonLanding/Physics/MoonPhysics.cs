@@ -4,7 +4,7 @@ namespace MoonLanding.Physics
 {
     public class MoonPhysics : Physics
     {
-        private readonly Vector Gravity = Vector.Create(0, 1.62);
+        private static readonly Vector Gravity = Vector.Create(0, 1.62);
         
         public override void Update(double dt)
         {
@@ -12,7 +12,7 @@ namespace MoonLanding.Physics
                 UpdateObject(obj, dt);
         }
 
-        private void UpdateObject(IPhysObject obj, double dt)
+        private static void UpdateObject(IPhysObject obj, double dt)
         {
             var actualAcceleration = obj.Acceleration + Gravity;
             obj.Velocity += actualAcceleration * dt;
