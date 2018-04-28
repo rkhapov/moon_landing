@@ -11,6 +11,8 @@ namespace MoonLanding
     class Ship : IPhysObject
     {
         public double Fuel { get; private set; }
+        
+        public Vector Direction { get; set; }
 
         public Vector Velocity { get; set; }
 
@@ -26,6 +28,7 @@ namespace MoonLanding
         {
             Velocity = Vector.Zero;
             Acceleration = Vector.Zero;
+            Direction = Vector.Create(0, 1);
             Fuel = fuel;
             Size = size;
             Cords = cords;
@@ -42,10 +45,15 @@ namespace MoonLanding
             return (Cords == obj.Cords);
         }
 
+        public void ChangeDirection(double angle)
+        {
+            Direction = Direction.Rotate(angle);
+        }
+
         public void EnableEngine(double dt)
         {
             double fuelConsumption = 1;
-            Vector engineAcceleration = Vector.Zero; // ???
+            Vector engineAcceleration = Vector.Create(1, 0).Rotate(Direction.Angle); // ???
             Acceleration += engineAcceleration * dt;
             Fuel -= fuelConsumption*dt;
         }
