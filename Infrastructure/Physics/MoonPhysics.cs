@@ -5,6 +5,8 @@ namespace Infrastructure.Physics
 {
     public class MoonPhysics : Physics
     {
+        
+        
         private static readonly Vector Gravity = Vector.Create(0, 1.62);
         
         public override void Update(double dt)
