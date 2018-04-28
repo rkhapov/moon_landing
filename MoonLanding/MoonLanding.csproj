@@ -42,6 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Level.cs" />
     <Compile Include="EntryPoint.cs" />
     <Compile Include="GroundCell.cs" />
     <Compile Include="Landscape.cs" />

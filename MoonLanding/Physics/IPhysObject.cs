@@ -1,4 +1,5 @@
 ﻿using MoonLanding.Tools;
+using System.Runtime.Serialization;
 
 namespace MoonLanding.Physics
 {
@@ -11,5 +12,6 @@ namespace MoonLanding.Physics
         int Mass { get; set; }
 
         bool IntersectsWith(IPhysObject obj);
+        //void Serialize(IPhysObject obj);
     }
 }
