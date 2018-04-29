@@ -16,16 +16,23 @@ namespace MoonLanding
         private Timer timer;
         private Image image;
 
+        private Bitmap disableEngineShipImage;
+        
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
             DoubleBuffered = true;
             WindowState = FormWindowState.Maximized;
+            FormBorderStyle = FormBorderStyle.FixedDialog;
+            MaximizeBox = false;
+            MinimizeBox = false;
         }
 
         public GameForm()
         {
             SetUpTimer();
+            disableEngineShipImage = new Bitmap("ship_disabled.png");
+
         }
 
         public void SetGame(Game game)
@@ -71,11 +78,12 @@ namespace MoonLanding
             game.Controller.ProvideKeyUp(e.KeyCode);
         }
         
-        protected override void OnPaint(PaintEventArgs e)
+        protected override void OnPaint(PaintEventArgs pevent)
         {
-            e.Graphics.FillRectangle(Brushes.Bisque, ClientRectangle);
+            pevent.Graphics.FillRectangle(Brushes.Bisque, ClientRectangle);
             DrawTo(Graphics.FromImage(image));
-            e.Graphics.DrawImage(image, (ClientRectangle.Width - image.Width)/2, (ClientRectangle.Height - image.Height) / 2);
+            pevent.Graphics.DrawImage(image, (ClientRectangle.Width - image.Width) / 2,
+                (ClientRectangle.Height - image.Height) / 2);
         }
 
         private void DrawTo(Graphics graphics)
@@ -108,8 +116,9 @@ namespace MoonLanding
         private void DrawShip(Graphics graphics)
         {
             var ship = game.Level.Ship;
-            graphics.FillRectangle(Brushes.Red, (float) ship.Cords.X, (float) ship.Cords.Y, ship.Size.Width,
-                ship.Size.Height);
+
+            graphics.DrawImage(disableEngineShipImage,
+                new Rectangle((int) ship.Cords.X, (int) ship.Cords.Y, ship.Size.Width, ship.Size.Height));
         }
 
         private void DrawInfo(Graphics graphics)

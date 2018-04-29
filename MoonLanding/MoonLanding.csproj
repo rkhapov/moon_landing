@@ -46,6 +46,7 @@
   <ItemGroup>
     <Compile Include="EntryPoint.cs" />
     <Compile Include="GameForm.cs" />
+    <Compile Include="MainMenuForm.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
