@@ -48,8 +48,7 @@ namespace Core.Objects
 
         void IPhysObject.Update(double dt)
         {
-            Cords += Velocity * dt;
-            Velocity = Acceleration * dt;
+            //TODO: compute fuel
         }
 
         void Die()
