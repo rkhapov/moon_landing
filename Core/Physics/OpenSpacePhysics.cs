@@ -10,7 +10,15 @@ namespace Core.Physics
         public void Update(IEnumerable<IPhysObject> objectsToUpdate, double dt)
         {
             foreach (var obj in objectsToUpdate)
-                obj.Update(dt);
+                UpdateObject(obj, dt);
+        }
+        
+        private static void UpdateObject(IPhysObject obj, double dt)
+        {
+            obj.Velocity += obj.Acceleration * dt;
+            obj.Cords += obj.Velocity * dt;
+            
+            obj.Update(dt);
         }
     }
 }

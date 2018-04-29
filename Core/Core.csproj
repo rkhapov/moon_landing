@@ -45,8 +45,8 @@
     <Compile Include="Controls\GameController.cs" />
     <Compile Include="Controls\IKeyboardListener.cs" />
     <Compile Include="Controls\ITimerListener.cs" />
-    <Compile Include="Level.cs" />
-    <Compile Include="LevelInfo.cs" />
+    <Compile Include="Game\Level.cs" />
+    <Compile Include="Game\LevelInfo.cs" />
     <Compile Include="Objects\GroundCell.cs" />
     <Compile Include="Objects\IPhysObject.cs" />
     <Compile Include="Objects\Landscape.cs" />

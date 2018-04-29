@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Core.Objects;
 
-namespace Core
+namespace Core.Game
 {
     public class Level
     {

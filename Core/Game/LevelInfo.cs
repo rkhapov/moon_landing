@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using Core.Tools;
 
-namespace Core
+namespace Core.Game
 {
     public class LevelInfo
     {
