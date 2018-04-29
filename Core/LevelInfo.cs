@@ -34,7 +34,7 @@ namespace Core
             }
         }
 
-        private Vector ReadVector(string[] line)
+        private static Vector ReadVector(string[] line)
         {
             return Vector.Create(double.Parse(line[0]), double.Parse(line[1]));
         }

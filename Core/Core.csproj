@@ -37,10 +37,14 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controls\GameController.cs" />
+    <Compile Include="Controls\IKeyboardListener.cs" />
+    <Compile Include="Controls\ITimerListener.cs" />
     <Compile Include="Level.cs" />
     <Compile Include="LevelInfo.cs" />
     <Compile Include="Objects\GroundCell.cs" />
