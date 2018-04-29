@@ -1,11 +1,10 @@
 ﻿using System.Collections.Generic;
-using FluentAssertions;
-using Infrastructure.Objects;
-using Infrastructure.Physics;
-using Infrastructure.Tools;
+using Core.Objects;
+using Core.Tools;
 using NUnit.Framework;
+using Size = Core.Tools.Size;
 
-namespace Infrastructure.Tests
+namespace Core.Tests
 {
     [TestFixture]
     public class PhysicsTests

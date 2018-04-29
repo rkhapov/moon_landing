@@ -1,7 +1,7 @@
-﻿using Infrastructure.Tools;
-using System.IO;
+﻿using System.IO;
+using Core.Tools;
 
-namespace Infrastructure
+namespace Core
 {
     public class LevelInfo
     {

@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using Infrastructure.Tools;
-using Size = Infrastructure.Tools.Size;
+using Core.Tools;
+using Size = Core.Tools.Size;
 
-namespace Infrastructure.Objects
+namespace Core.Objects
 {
     public class Landscape : IPhysObject
     {

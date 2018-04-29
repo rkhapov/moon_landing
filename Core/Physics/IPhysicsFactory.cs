@@ -1,4 +1,4 @@
-﻿namespace Infrastructure.Physics
+﻿namespace Core.Physics
 {
     public interface IPhysicsFactory
     {

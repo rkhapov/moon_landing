@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using Core.Objects;
+using Core.Tools;
 using FluentAssertions;
-using Infrastructure.Objects;
-using Infrastructure.Tools;
 using NSubstitute;
 using NUnit.Framework;
-using Size = Infrastructure.Tools.Size;
+using Size = Core.Tools.Size;
 
-namespace Infrastructure.Tests
+namespace Core.Tests
 {
     [TestFixture]
     public class LandscapeTests

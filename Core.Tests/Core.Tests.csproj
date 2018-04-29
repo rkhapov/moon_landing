@@ -4,12 +4,12 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{ABC41CC9-5B5E-4E67-9E83-CC3C6D7BDC1D}</ProjectGuid>
+    <ProjectGuid>{9CDF77E4-8449-4D66-937B-8F198D8E26FF}</ProjectGuid>
     <ProjectTypeGuids>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Infrastructure.Tests</RootNamespace>
-    <AssemblyName>Infrastructure.Tests</AssemblyName>
+    <RootNamespace>Core.Tests</RootNamespace>
+    <AssemblyName>Core.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -56,8 +56,9 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="PhysicsTests.cs" />
     <Compile Include="LandscapeTests.cs" />
+    <Compile Include="PhysicsFactoryTests.cs" />
+    <Compile Include="PhysicsTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="VectorTests.cs" />
   </ItemGroup>
@@ -65,13 +66,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Infrastructure\Infrastructure.csproj">
-      <Project>{dbefa2f3-6fcf-4609-99e2-4ebf61e1a48b}</Project>
-      <Name>Infrastructure</Name>
+    <ProjectReference Include="..\Core\Core.csproj">
+      <Project>{e78346dc-da93-44ec-a561-79309afe6d50}</Project>
+      <Name>Core</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

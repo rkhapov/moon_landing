@@ -1,20 +1,21 @@
-﻿using Infrastructure.Objects;
-using Infrastructure.Tools;
+﻿using System.Collections.Generic;
+using Core.Objects;
+using Core.Tools;
 
-namespace Infrastructure.Physics
+namespace Core.Physics
 {
-    public class MoonPhysics : Physics
+    public class MoonPhysics : IPhysics
     {
-        
-        
         private static readonly Vector Gravity = Vector.Create(0, 1.62);
-        
-        public override void Update(double dt)
+
+        public string Name => "moon";
+
+        public void Update(IEnumerable<IPhysObject> objectsToUpdate, double dt)
         {
-            foreach (var obj in Objects)
+            foreach (var obj in objectsToUpdate)
                 UpdateObject(obj, dt);
         }
-
+        
         private static void UpdateObject(IPhysObject obj, double dt)
         {
             var actualAcceleration = obj.Acceleration + Gravity;

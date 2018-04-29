@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using Infrastructure.Objects;
+using Core.Objects;
 
-namespace Infrastructure
+namespace Core
 {
     public class Level
     {

@@ -1,4 +1,4 @@
-﻿namespace Infrastructure.Objects
+﻿namespace Core.Objects
 {
     public enum GroundCell
     {

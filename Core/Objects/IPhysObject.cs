@@ -1,6 +1,6 @@
-﻿using Infrastructure.Tools;
+﻿using Core.Tools;
 
-namespace Infrastructure.Objects
+namespace Core.Objects
 {
     public interface IPhysObject
     {

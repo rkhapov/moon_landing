@@ -1,9 +1,9 @@
 ﻿using System;
+using Core.Tools;
 using FluentAssertions;
-using Infrastructure.Tools;
 using NUnit.Framework;
 
-namespace Infrastructure.Tests
+namespace Core.Tests
 {
     [TestFixture]
     public class VectorTests
