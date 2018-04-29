@@ -50,7 +50,7 @@ namespace Core.Tests
                 "*****.............******....************",
                 "******.........*************************",
                 "****************************************"
-            });
+            }, chr => chr == '*' ? GroundCell.Ground : GroundCell.Empty);
             
             yield return new TestCaseData(landscape, GetObjectWithSize(Vector.Create(0, 0), Size.Create(5, 5)), false).SetName("int 1");
             yield return new TestCaseData(landscape, GetObjectWithSize(Vector.Create(2, 2), Size.Create(5, 5)), false).SetName("int 2");
@@ -164,7 +164,7 @@ namespace Core.Tests
                 "********************"
             };
 
-            var sut = Landscape.CreateFromText(text);
+            var sut = Landscape.CreateFromText(text, chr => chr == '*' ? GroundCell.Ground : GroundCell.Empty);
 
             for (var i = 0; i < text.Count; i++)
             {
@@ -199,14 +199,17 @@ namespace Core.Tests
         {
             var image = GetRandomImage();
 
-            var sut = Landscape.LoadFromImage(image);
+            var sut = Landscape.LoadFromImage(image, color => color.R + color.G + color.B < 100 ? GroundCell.Ground : GroundCell.Empty);
 
             for (var i = 0; i < image.Height; i++)
             {
                 for (var j = 0; j < image.Width; j++)
                 {
+                    var pixel = image.GetPixel(j, i);
+                    var expected = pixel.R + pixel.G + pixel.B < 100 ? GroundCell.Ground : GroundCell.Empty;
+                    
                     sut.GetCell(i, j).Should()
-                        .BeEquivalentTo(image.GetPixel(j, i) == Color.Black ? GroundCell.Ground : GroundCell.Empty);
+                        .BeEquivalentTo(expected);
                 }
             }
         }

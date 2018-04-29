@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Imaging;
 using Core.Tools;
 using Size = Core.Tools.Size;
 
@@ -81,27 +82,27 @@ namespace Core.Objects
             return new Landscape(size);
         }
 
-        public static Landscape CreateFromText(List<string> text)
+        public static Landscape CreateFromText(List<string> text, Func<char, GroundCell> cellPredicate)
         {
             if (text.Count == 0)
                 return Create(Size.Zero);
             var landscape = Create(Size.Create(text[0].Length, text.Count));
-            landscape.FillFromText(text);
+            landscape.FillFromText(text, cellPredicate);
 
             return landscape;
         }
 
-        public static Landscape LoadFromImageFile(string path)
+        public static Landscape LoadFromImageFile(string path, Func<Color, GroundCell> cellPredicate)
         {
             var image = new Bitmap(path);
             
-            return LoadFromImage(image);
+            return LoadFromImage(image, cellPredicate);
         }
 
-        public static Landscape LoadFromImage(Bitmap image)
+        public static Landscape LoadFromImage(Bitmap image, Func<Color, GroundCell> cellPredicate)
         {
             var landspace = Landscape.Create(Size.Create(image.Width, image.Height));
-            landspace.FillFromBitmap(image);
+            landspace.FillFromBitmap(image, cellPredicate);
 
             return landspace;
         }
@@ -126,24 +127,21 @@ namespace Core.Objects
             return false;
         }
         
-        private void FillFromText(List<string> text)
+        private void FillFromText(List<string> text, Func<char, GroundCell> cellPredicate)
         {
             for (var i = 0; i < Size.Height; i++)
             {
                 for (var j = 0; j < Size.Width; j++)
-                    landscape[i, j] = text[i][j] == '*' ? GroundCell.Ground : GroundCell.Empty;
+                    landscape[i, j] = cellPredicate(text[i][j]);
             }
         }
 
-        private void FillFromBitmap(Bitmap bitmap)
+        private void FillFromBitmap(Bitmap bitmap, Func<Color, GroundCell> cellPredicate)
         {
             for (var i = 0; i < bitmap.Height; i++)
             {
                 for (var j = 0; j < bitmap.Width; j++)
-                {
-                    if (bitmap.GetPixel(j, i) == Color.Black)
-                        SetCell(i, j, GroundCell.Ground);
-                }
+                    SetCell(i, j, cellPredicate(bitmap.GetPixel(j, i)));
             }
         }
     }
