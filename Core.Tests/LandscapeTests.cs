@@ -48,8 +48,8 @@ namespace Core.Tests
                 ".................................*******",
                 ".**............................*********",
                 "*****.............******....************",
-                "******.........*************************",
-                "****************************************"
+                "******.........******************...****",
+                "*********************************...****"
             }, chr => chr == '*' ? LandscapeCell.Ground : LandscapeCell.Empty);
             
             yield return new TestCaseData(landscape, GetObjectWithSize(Vector.Create(0, 0), Size.Create(5, 5)), false).SetName("int 1");
@@ -62,11 +62,16 @@ namespace Core.Tests
             yield return new TestCaseData(landscape, GetObjectWithSize(Vector.Create(-10, 20), Size.Create(100, 100)), false).SetName("int 8");
             yield return new TestCaseData(landscape, GetObjectWithSize(Vector.Create(-10, 10), Size.Create(100, 100)), true).SetName("int 9");
             yield return new TestCaseData(landscape, GetObjectWithSize(Vector.Create(35, 4), Size.Create(1, 1)), false).SetName("int 10");
+            yield return new TestCaseData(landscape, GetObjectWithSize(Vector.Create(34, 12), Size.Create(1, 1)), false).SetName("int 11");
+            yield return new TestCaseData(landscape, GetObjectWithSize(Vector.Create(32, 12), Size.Create(1, 1)), true).SetName("int 12");
             
             yield return new TestCaseData(landscape, GetObjectWithSize(Vector.Create(26.1, 5), Size.Create(1, 1)), true).SetName("double 1");
             yield return new TestCaseData(landscape, GetObjectWithSize(Vector.Create(-1, 5), Size.Create(10, 10)), true).SetName("double 2");
             yield return new TestCaseData(landscape, GetObjectWithSize(Vector.Create(26.7, 7), Size.Create(1, 1)), false).SetName("double 3");
-            yield return new TestCaseData(landscape, GetObjectWithSize(Vector.Create(26, 7.1), Size.Create(1, 1)), false).SetName("double 4");
+            yield return new TestCaseData(landscape, GetObjectWithSize(Vector.Create(26, 7.1), Size.Create(1, 1)), false).SetName("double 4");            
+            yield return new TestCaseData(landscape, GetObjectWithSize(Vector.Create(34.9, 12), Size.Create(1, 1)), false).SetName("double 5");
+            yield return new TestCaseData(landscape, GetObjectWithSize(Vector.Create(32.1, 12), Size.Create(1, 1)), true).SetName("double 6");
+            
         }
 
         [TestCaseSource(nameof(CreateSizeTestCases))]

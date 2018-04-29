@@ -108,12 +108,23 @@ namespace Core.Objects
 
         public bool IntersectsWith(IPhysObject obj)
         {
+            if (ReferenceEquals(obj, this))
+                return false;
+
+            if (ReferenceEquals(obj, null))
+                return false;
+            
             if (obj is Landscape)
                 throw new ArgumentException("Cant intersect Landscape and Landscape");
 
-            for (var y = (int)Math.Ceiling(obj.Cords.Y); y < (int)Math.Ceiling(obj.Cords.Y) + obj.Size.Height; y++)
+            return Intersects(obj);
+        }
+
+        private bool Intersects(IPhysObject obj)
+        {
+            for (var y = (int)Math.Floor(obj.Cords.Y); y < (int)Math.Ceiling(obj.Cords.Y) + obj.Size.Height; y++)
             {
-                for (var x = (int) Math.Ceiling(obj.Cords.X); x < (int) Math.Ceiling(obj.Cords.X) + obj.Size.Width; x++)
+                for (var x = (int) Math.Floor(obj.Cords.X); x < (int) Math.Ceiling(obj.Cords.X) + obj.Size.Width; x++)
                 {
                     if (!InBound(y, x))
                         continue;

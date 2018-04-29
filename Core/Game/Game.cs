@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Linq;
 using System.Windows.Forms;
 using Core.Controls;
+using Core.Objects;
 
 namespace Core.Game
 {
@@ -10,7 +12,7 @@ namespace Core.Game
         Failed,
         Success
     }
-    
+
     public class Game
     {
         public Controller Controller { get; private set; }
@@ -30,7 +32,23 @@ namespace Core.Game
 
         private void OnWorldUpdate(double dt)
         {
+            if (State != GameState.InProgress) 
+                return;
+            
             Level.Physics.Update(Level.Objects, dt);
+            UpdateGameState();
+        }
+
+        private void UpdateGameState()
+        {
+            var collideObject = GetShipCollidesObject();
+            //TODO: make checking for landing and setting game sate
+        }
+
+        private IPhysObject GetShipCollidesObject()
+        {
+            throw new NotImplementedException();
+            return Level.Objects.FirstOrDefault(Level.Ship.IntersectsWith);
         }
 
         private void OnKeyDown(Keys key)

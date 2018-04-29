@@ -6,6 +6,12 @@ namespace Core.Objects
     {
         public static bool IsRectangleObjectsIntersects(this IPhysObject obj, IPhysObject otherObj)
         {
+            if (ReferenceEquals(obj, otherObj))
+                return false;
+
+            if (otherObj == null)
+                return false;
+            
             return IsSegmentIntersects(obj.Cords.X, obj.Size.Width, otherObj.Cords.X, otherObj.Size.Width)
                    && IsSegmentIntersects(obj.Cords.Y, obj.Size.Height, otherObj.Cords.Y, otherObj.Size.Height);
         }
