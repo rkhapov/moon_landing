@@ -1,6 +1,6 @@
 ﻿using System.Windows.Forms;
 
-namespace Core
+namespace Core.Controls
 {
     public interface IKeyboardListener
     {

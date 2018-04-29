@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 
-namespace Core
+namespace Core.Controls
 {
     public class GameController : IKeyboardListener, ITimerListener
     {

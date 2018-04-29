@@ -1,4 +1,4 @@
-﻿namespace Core
+﻿namespace Core.Controls
 {
     public interface ITimerListener
     {
