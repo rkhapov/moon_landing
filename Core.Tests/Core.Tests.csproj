@@ -59,6 +59,7 @@
     <Compile Include="LandscapeTests.cs" />
     <Compile Include="PhysicsFactoryTests.cs" />
     <Compile Include="PhysicsTests.cs" />
+    <Compile Include="PhysObjectExtensionsTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="VectorTests.cs" />
   </ItemGroup>

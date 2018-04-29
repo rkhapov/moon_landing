@@ -46,6 +46,7 @@
     <Compile Include="Objects\GroundCell.cs" />
     <Compile Include="Objects\IPhysObject.cs" />
     <Compile Include="Objects\Landscape.cs" />
+    <Compile Include="Objects\PhysObjectExtensions.cs" />
     <Compile Include="Objects\Ship.cs" />
     <Compile Include="Physics\IPhysics.cs" />
     <Compile Include="Physics\IPhysicsFactory.cs" />
