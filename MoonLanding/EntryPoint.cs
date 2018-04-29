@@ -1,10 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Drawing.Imaging;
+﻿using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
 using Core.Controls;
+using Core.Game;
 using Core.Objects;
+using Core.Physics;
+using Core.Tools;
 
 namespace MoonLanding
 {
@@ -12,7 +13,18 @@ namespace MoonLanding
     {
         public static void Main(string[] args)
         {
-            Application.Run(new GameForm(new GameController()));
+            var landscape = Landscape.LoadFromImageFile("landscape_test.png",
+                color => color.R + color.B + color.G < 100 ? LandscapeCell.Ground : LandscapeCell.Empty);
+
+            var level = Level.Create(landscape, Enumerable.Empty<IPhysObject>(), new MoonPhysics(),
+                Ship.Create(100, Core.Tools.Size.Create(10, 10), Vector.Create(100, 50), 1));
+            
+            var game = new Game(level);
+            
+            var gameForm = new GameForm();
+            gameForm.SetGame(game);
+            
+            Application.Run(gameForm);
         }
     }
 }

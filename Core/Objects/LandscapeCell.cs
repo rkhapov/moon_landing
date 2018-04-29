@@ -1,6 +1,6 @@
 ﻿namespace Core.Objects
 {
-    public enum GroundCell
+    public enum LandscapeCell
     {
         Ground = 1,
         Empty

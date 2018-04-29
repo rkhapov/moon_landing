@@ -34,7 +34,7 @@ namespace Core.Tests
                 "****.........*********",
                 "******....************",
                 "**********************"
-            }, chr => chr == '*' ? GroundCell.Ground : GroundCell.Empty);
+            }, chr => chr == '*' ? LandscapeCell.Ground : LandscapeCell.Empty);
             // TODO
         }
     }

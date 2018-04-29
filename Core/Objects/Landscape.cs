@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Drawing.Imaging;
 using Core.Tools;
 using Size = Core.Tools.Size;
 
@@ -41,26 +40,26 @@ namespace Core.Objects
             //landscape are static
         }
 
-        private readonly GroundCell[,] landscape;
+        private readonly LandscapeCell[,] landscape;
 
         private Landscape(Size size)
         {
             Size = size;
-            landscape = new GroundCell[size.Height, size.Width];
+            landscape = new LandscapeCell[size.Height, size.Width];
 
             for (var i = 0; i < size.Height; i++)
             {
                 for (var j = 0; j < size.Width; j++)
-                    landscape[i, j] = GroundCell.Empty;
+                    landscape[i, j] = LandscapeCell.Empty;
             }
         }
 
-        public GroundCell GetCell(int y, int x)
+        public LandscapeCell GetCell(int y, int x)
         {
             return landscape[y, x];
         }
         
-        public Landscape SetCell(int y, int x, GroundCell value)
+        public Landscape SetCell(int y, int x, LandscapeCell value)
         {
             landscape[y, x] = value;
             
@@ -69,7 +68,7 @@ namespace Core.Objects
 
         public bool GroundAt(int y, int x)
         {
-            return GetCell(y, x) == GroundCell.Ground;
+            return GetCell(y, x) == LandscapeCell.Ground;
         }
 
         public bool InBound(int y, int x)
@@ -82,7 +81,7 @@ namespace Core.Objects
             return new Landscape(size);
         }
 
-        public static Landscape CreateFromText(List<string> text, Func<char, GroundCell> cellPredicate)
+        public static Landscape CreateFromText(List<string> text, Func<char, LandscapeCell> cellPredicate)
         {
             if (text.Count == 0)
                 return Create(Size.Zero);
@@ -92,14 +91,14 @@ namespace Core.Objects
             return landscape;
         }
 
-        public static Landscape LoadFromImageFile(string path, Func<Color, GroundCell> cellPredicate)
+        public static Landscape LoadFromImageFile(string path, Func<Color, LandscapeCell> cellPredicate)
         {
             var image = new Bitmap(path);
             
             return LoadFromImage(image, cellPredicate);
         }
 
-        public static Landscape LoadFromImage(Bitmap image, Func<Color, GroundCell> cellPredicate)
+        public static Landscape LoadFromImage(Bitmap image, Func<Color, LandscapeCell> cellPredicate)
         {
             var landspace = Landscape.Create(Size.Create(image.Width, image.Height));
             landspace.FillFromBitmap(image, cellPredicate);
@@ -127,7 +126,7 @@ namespace Core.Objects
             return false;
         }
         
-        private void FillFromText(List<string> text, Func<char, GroundCell> cellPredicate)
+        private void FillFromText(List<string> text, Func<char, LandscapeCell> cellPredicate)
         {
             for (var i = 0; i < Size.Height; i++)
             {
@@ -136,7 +135,7 @@ namespace Core.Objects
             }
         }
 
-        private void FillFromBitmap(Bitmap bitmap, Func<Color, GroundCell> cellPredicate)
+        private void FillFromBitmap(Bitmap bitmap, Func<Color, LandscapeCell> cellPredicate)
         {
             for (var i = 0; i < bitmap.Height; i++)
             {

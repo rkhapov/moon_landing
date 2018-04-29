@@ -50,7 +50,7 @@ namespace Core.Tests
                 "*****.............******....************",
                 "******.........*************************",
                 "****************************************"
-            }, chr => chr == '*' ? GroundCell.Ground : GroundCell.Empty);
+            }, chr => chr == '*' ? LandscapeCell.Ground : LandscapeCell.Empty);
             
             yield return new TestCaseData(landscape, GetObjectWithSize(Vector.Create(0, 0), Size.Create(5, 5)), false).SetName("int 1");
             yield return new TestCaseData(landscape, GetObjectWithSize(Vector.Create(2, 2), Size.Create(5, 5)), false).SetName("int 2");
@@ -78,7 +78,7 @@ namespace Core.Tests
             for (var i = 0; i < size.Height; i++)
             {
                 for (var j = 0; j < size.Width; j++)
-                    sut.GetCell(i, j).Should().BeEquivalentTo(GroundCell.Empty);
+                    sut.GetCell(i, j).Should().BeEquivalentTo(LandscapeCell.Empty);
             }
         }
 
@@ -128,13 +128,13 @@ namespace Core.Tests
         {
             var random = new Random();
             var landscape = Landscape.Create(Size.Create(random.Next(10, 100), random.Next(10, 100)));
-            var exceptedLandscape = new GroundCell[landscape.Size.Height, landscape.Size.Width];
+            var exceptedLandscape = new LandscapeCell[landscape.Size.Height, landscape.Size.Width];
 
             for (var i = 0; i < landscape.Size.Height; i++)
             {
                 for (var j = 0; j < landscape.Size.Width; j++)
                 {
-                    exceptedLandscape[i, j] = random.Next(1, 2) == 1 ? GroundCell.Empty : GroundCell.Ground;
+                    exceptedLandscape[i, j] = random.Next(1, 2) == 1 ? LandscapeCell.Empty : LandscapeCell.Ground;
                     landscape.SetCell(i, j, exceptedLandscape[i, j]);
                 }
             }
@@ -164,12 +164,12 @@ namespace Core.Tests
                 "********************"
             };
 
-            var sut = Landscape.CreateFromText(text, chr => chr == '*' ? GroundCell.Ground : GroundCell.Empty);
+            var sut = Landscape.CreateFromText(text, chr => chr == '*' ? LandscapeCell.Ground : LandscapeCell.Empty);
 
             for (var i = 0; i < text.Count; i++)
             {
                 for (var j = 0; j < text[i].Length; j++)
-                    sut.GetCell(i, j).Should().BeEquivalentTo(text[i][j] == '*' ? GroundCell.Ground : GroundCell.Empty);
+                    sut.GetCell(i, j).Should().BeEquivalentTo(text[i][j] == '*' ? LandscapeCell.Ground : LandscapeCell.Empty);
             }
         }
 
@@ -199,14 +199,14 @@ namespace Core.Tests
         {
             var image = GetRandomImage();
 
-            var sut = Landscape.LoadFromImage(image, color => color.R + color.G + color.B < 100 ? GroundCell.Ground : GroundCell.Empty);
+            var sut = Landscape.LoadFromImage(image, color => color.R + color.G + color.B < 100 ? LandscapeCell.Ground : LandscapeCell.Empty);
 
             for (var i = 0; i < image.Height; i++)
             {
                 for (var j = 0; j < image.Width; j++)
                 {
                     var pixel = image.GetPixel(j, i);
-                    var expected = pixel.R + pixel.G + pixel.B < 100 ? GroundCell.Ground : GroundCell.Empty;
+                    var expected = pixel.R + pixel.G + pixel.B < 100 ? LandscapeCell.Ground : LandscapeCell.Empty;
                     
                     sut.GetCell(i, j).Should()
                         .BeEquivalentTo(expected);

@@ -18,7 +18,7 @@ namespace Core.Physics
         
         private static void UpdateObject(IPhysObject obj, double dt)
         {
-            var actualAcceleration = obj.Acceleration + Gravity;
+            var actualAcceleration = obj.Acceleration + (obj.Mass == 0 ? Vector.Zero : Gravity);
             obj.Velocity += actualAcceleration * dt;
             obj.Cords += obj.Velocity * dt;
             

@@ -42,12 +42,13 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controls\GameController.cs" />
-    <Compile Include="Controls\IKeyboardListener.cs" />
-    <Compile Include="Controls\ITimerListener.cs" />
+    <Compile Include="Controls\Controller.cs" />
+    <Compile Include="Controls\IKeyboardProvider.cs" />
+    <Compile Include="Controls\ITimerProvider.cs" />
+    <Compile Include="Game\Game.cs" />
     <Compile Include="Game\Level.cs" />
     <Compile Include="Game\LevelInfo.cs" />
-    <Compile Include="Objects\GroundCell.cs" />
+    <Compile Include="Objects\LandscapeCell.cs" />
     <Compile Include="Objects\IPhysObject.cs" />
     <Compile Include="Objects\Landscape.cs" />
     <Compile Include="Objects\PhysObjectExtensions.cs" />
