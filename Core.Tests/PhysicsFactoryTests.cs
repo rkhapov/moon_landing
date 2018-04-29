@@ -23,6 +23,7 @@ namespace Core.Tests
 
         [TestCase("moon", typeof(MoonPhysics))]
         [TestCase("open space", typeof(OpenSpacePhysics))]
+        [TestCase("earth", typeof(EarthPhysics))]
         public void FromName_LowerCasedNames_ShouldReturnExpectedPhysics(string name, Type expected)
         {
             var sut = new PhysicsFactory().FromName(name);

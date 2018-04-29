@@ -1,7 +1,5 @@
-﻿using System.Drawing;
-using System.Linq;
+﻿using System.Linq;
 using System.Windows.Forms;
-using Core.Controls;
 using Core.Game;
 using Core.Objects;
 using Core.Physics;
@@ -16,8 +14,8 @@ namespace MoonLanding
             var landscape = Landscape.LoadFromImageFile("landscape_test.png",
                 color => color.R + color.B + color.G < 100 ? LandscapeCell.Ground : LandscapeCell.Empty);
 
-            var level = Level.Create(landscape, Enumerable.Empty<IPhysObject>(), new MoonPhysics(),
-                Ship.Create(100, Core.Tools.Size.Create(10, 10), Vector.Create(100, 50), 1));
+            var level = Level.Create(landscape, Enumerable.Empty<IPhysObject>(), new EarthPhysics(),
+                Ship.Create(100, Core.Tools.Size.Create(10, 10), Vector.Create(450, 50), 1));
             
             var game = new Game(level);
             

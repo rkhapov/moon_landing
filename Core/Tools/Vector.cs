@@ -81,5 +81,10 @@ namespace Core.Tools
             return Create(X * Math.Cos(angle) - Y * Math.Sin(angle),
                 X * Math.Sin(angle) - Y * Math.Cos(angle));
         }
+
+        public override string ToString()
+        {
+            return $"{X:0.00} {Y:0.00}";
+        }
     }
 }

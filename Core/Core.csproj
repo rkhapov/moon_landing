@@ -53,6 +53,7 @@
     <Compile Include="Objects\Landscape.cs" />
     <Compile Include="Objects\PhysObjectExtensions.cs" />
     <Compile Include="Objects\Ship.cs" />
+    <Compile Include="Physics\EarthPhysics.cs" />
     <Compile Include="Physics\IPhysics.cs" />
     <Compile Include="Physics\IPhysicsFactory.cs" />
     <Compile Include="Physics\MoonPhysics.cs" />

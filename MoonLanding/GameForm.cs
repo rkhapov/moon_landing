@@ -56,7 +56,7 @@ namespace MoonLanding
 
         private void OnGameTimerTick()
         {
-            game.Controller.ProvideTick(1000.0 / TimerInterval);
+            game.Controller.ProvideTick(TimerInterval / 1000.0);
         }
         
         protected override void OnKeyDown(KeyEventArgs e)
@@ -73,7 +73,7 @@ namespace MoonLanding
         
         protected override void OnPaint(PaintEventArgs e)
         {
-            //e.Graphics.FillRectangle(Brushes.Bisque, ClientRectangle);
+            e.Graphics.FillRectangle(Brushes.Bisque, ClientRectangle);
             DrawTo(Graphics.FromImage(image));
             e.Graphics.DrawImage(image, (ClientRectangle.Width - image.Width)/2, (ClientRectangle.Height - image.Height) / 2);
         }
@@ -114,7 +114,12 @@ namespace MoonLanding
 
         private void DrawInfo(Graphics graphics)
         {
-            graphics.DrawString($"Fuel: {game.Level.Ship.Fuel}",
+            var ship = game.Level.Ship;
+            graphics.DrawString($"Fuel: {ship.Fuel:0:00}\n" +
+                                $"Cords: {ship.Cords}\n" +
+                                $"Velocity: {ship.Velocity}\n" +
+                                $"Absolut velocity: {ship.Velocity.Length:0:00}\n" +
+                                $"Physics: {game.Level.Physics.Name}",
                 new Font(FontFamily.GenericSerif, 10),
                 Brushes.AliceBlue,
                 0, 0);
