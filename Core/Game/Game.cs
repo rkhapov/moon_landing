@@ -44,15 +44,15 @@ namespace Core.Game
                 Level.Ship.ChangeDirection(-0.05);
                 break;
             case Keys.Up:
-                Level.Ship.EnableEngine();
+//                Level.Ship.EnableEngine();
                 break;
             }
         }
 
         private void OnKeyUp(Keys key)
         {
-            if (key == Keys.Up)
-                Level.Ship.DisableEngine();
+            /*if (key == Keys.Up)
+                Level.Ship.DisableEngine();*/
         }
     }
 }

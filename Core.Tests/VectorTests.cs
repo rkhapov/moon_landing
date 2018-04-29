@@ -65,5 +65,47 @@ namespace Core.Tests
             sut.Should().BeEquivalentTo(expected);
             sut.Length.Should().BeInRange(expectedLength - 1e-6, expectedLength + 1e-6);
         }
+
+        [TestCase(3, 4, 5)]
+        [TestCase(4, 3, 5)]
+        [TestCase(6, 8, 10)]
+        [TestCase(8, 6, 10)]
+        [TestCase(1, 0, 1)]
+        [TestCase(0, -1, 1)]
+        [TestCase(0, 0, 0)]
+        [TestCase(10, 0, 10)]
+        public void Length_ShouldReturnRightValue(double x, double y, double expected)
+        {
+            var sut = Vector.Create(x, y);
+            
+            sut.Length.Should().BeInRange(expected - 1e-6, expected + 1e-6);
+        }
+
+        
+        [TestCase(0, 0, 0, Description = "Zero vector have 0 angle")]
+        [TestCase(0, 1, Math.PI / 2)]
+        [TestCase(-1, 0, Math.PI)]
+        [TestCase(-100, 0, Math.PI)]
+        [TestCase(1, 1, Math.PI / 4)]
+        [TestCase(2, 2, Math.PI / 4)]
+        [TestCase(-1, 1, 3 * Math.PI / 4)]
+        public void Angle_ShouldReturnRightValue(double x, double y, double expected)
+        {
+            var sut = Vector.Create(x, y);
+            
+            sut.Angle.Should().BeInRange(expected - 1e-3, expected + 1e-3);
+        }
+
+        [Test]
+        [Repeat(100)]
+        public void Norm_ShoudReturnRightValue()
+        {
+            var vector = GetRandomVector();
+            
+            var sut = vector.Norm;
+
+            sut.Length.Should().BeInRange(1 - 1e-6, 1 + 1e-6);
+            sut.Angle.Should().BeInRange(vector.Angle - 1e-3, vector.Angle + 1e-3);
+        }
     }
 }

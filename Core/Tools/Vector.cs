@@ -24,8 +24,10 @@ namespace Core.Tools
         }
 
         public static Vector Zero { get; } = Create(0.0, 0.0);
+        
         public double Length => Math.Sqrt(X * X + Y * Y);
-        public double Angle => Math.Atan2(X, Y);
+        public double Angle => Math.Atan2(Y, X);
+        public Vector Norm => this * (1 / Length);
 
         public static Vector operator +(Vector v1, Vector v2)
         {
@@ -84,7 +86,7 @@ namespace Core.Tools
 
         public override string ToString()
         {
-            return $"{X:0.00} {Y:0.00}";
+            return $"{X:0.000} {Y:0.000}";
         }
     }
 }

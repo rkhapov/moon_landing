@@ -115,10 +115,10 @@ namespace MoonLanding
         private void DrawInfo(Graphics graphics)
         {
             var ship = game.Level.Ship;
-            graphics.DrawString($"Fuel: {ship.Fuel:0:00}\n" +
+            graphics.DrawString($"Fuel: {ship.Fuel:0.00}\n" +
                                 $"Cords: {ship.Cords}\n" +
                                 $"Velocity: {ship.Velocity}\n" +
-                                $"Absolut velocity: {ship.Velocity.Length:0:00}\n" +
+                                $"Absolut velocity: {ship.Velocity.Length:0.00}\n" +
                                 $"Physics: {game.Level.Physics.Name}",
                 new Font(FontFamily.GenericSerif, 10),
                 Brushes.AliceBlue,
