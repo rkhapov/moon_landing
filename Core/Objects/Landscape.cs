@@ -137,6 +137,36 @@ namespace Core.Objects
             return false;
         }
         
+        public bool IsLandingSite(int startX,int finishX)
+        {
+            var y = FindGround(startX);
+            if (y == -1) return false;
+            for (int x = startX; x <= finishX; x++)
+            {
+                if (FindGround(x) != y)
+                    return false;
+            }
+            return true;
+        }
+
+        private int FindGround(int x)
+        {
+            var emptyCount = 2;
+            for (int i = emptyCount; i < landscape.GetLength(0); i++)
+            {
+                var isEmpty = true;
+                for (int j = 1; j <= emptyCount; j++)
+                    if (landscape[i - j, x] != LandscapeCell.Empty)
+                    {
+                        isEmpty = false;
+                        break;
+                    }
+                if (isEmpty && landscape[i, x] == LandscapeCell.Ground)
+                    return i;
+            }
+            return -1;
+        }
+        
         private void FillFromText(List<string> text, Func<char, LandscapeCell> cellPredicate)
         {
             for (var i = 0; i < Size.Height; i++)

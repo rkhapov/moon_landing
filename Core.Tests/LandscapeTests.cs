@@ -232,5 +232,41 @@ namespace Core.Tests
 
             return image;
         }
+        
+        [Test]
+        public static void Landscape_ShouldFindLandingSite()
+        {
+            var landscape = Landscape.CreateFromText(new List<string>
+            {
+                "......................",
+                "................******",
+                "...............*******",
+                "****.........*********",
+                "******....************",
+                "**********************"
+            }, chr => chr == '*' ? LandscapeCell.Ground : LandscapeCell.Empty);
+            Assert.AreEqual(true,landscape.IsLandingSite(0,3));
+            Assert.AreEqual(false,landscape.IsLandingSite(0,4));
+            Assert.AreEqual(true,landscape.IsLandingSite(6,9));
+            Assert.AreEqual(false,landscape.IsLandingSite(16,19));
+        }
+        
+        [Test]
+        public static void Cave_ShouldFindLandingSite()
+        {
+            var landscape = Landscape.CreateFromText(new List<string>
+            {
+                "***...................",
+                "**********************",
+                "...............*******",
+                "****.........*********",
+                "******....************",
+                "**********************"
+            }, chr => chr == '*' ? LandscapeCell.Ground : LandscapeCell.Empty);
+            Assert.AreEqual(false,landscape.IsLandingSite(0,3));
+            Assert.AreEqual(true,landscape.IsLandingSite(6,9));
+            Assert.AreEqual(true,landscape.IsLandingSite(10,12));
+            Assert.AreEqual(false,landscape.IsLandingSite(16,19));
+        }
     }
 }
