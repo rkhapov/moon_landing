@@ -18,6 +18,7 @@ namespace Core.Game
             Physics = physics;
             Ship = ship;
             Objects.Add(Ship);
+            Objects.Add(landscape);
         }
 
         public static Level Create(Landscape landscape, IEnumerable<IPhysObject> objects, IPhysics physics, Ship ship)

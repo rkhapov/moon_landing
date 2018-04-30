@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using Core.Controls;
 using Core.Game;
 using Core.Objects;
 using Core.Physics;
@@ -53,7 +54,7 @@ namespace MoonLanding.Forms
                 color => color.R + color.B + color.G < 100 ? LandscapeCell.Ground : LandscapeCell.Empty);
             var level = Level.Create(landscape, Enumerable.Empty<IPhysObject>(), new EarthPhysics(),
                 Ship.Create(100, Core.Tools.Size.Create(25, 30), Vector.Create(450, 50), 1));
-            return new Game(level);
+            return new Game(level, new Controller());
         }
     }
 }

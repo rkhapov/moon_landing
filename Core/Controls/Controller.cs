@@ -3,7 +3,7 @@ using System.Windows.Forms;
 
 namespace Core.Controls
 {
-    public class Controller : IKeyboardProvider, ITimerProvider
+    public class Controller : IController
     {
         public event Action<double> Tick;
         public event Action<Keys> KeyUp;

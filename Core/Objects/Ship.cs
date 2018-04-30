@@ -30,7 +30,16 @@ namespace Core.Objects
 
         public bool IntersectsWith(IPhysObject obj)
         {
-            return Cords == obj.Cords;
+            if (ReferenceEquals(this, obj))
+                return false;
+
+            if (ReferenceEquals(obj, null))
+                return false;
+
+            if (obj is Landscape)
+                return obj.IntersectsWith(this);
+
+            return this.IsRectangleObjectsIntersects(obj);
         }
 
         public void ChangeDirection(double angle)

@@ -56,7 +56,17 @@ namespace MoonLanding.Forms
         {
             timer = new Timer() {Interval = TimerInterval};
             timer.Tick += (sender, obj) => OnGameTimerTick();
-            timer.Tick += (sender, obj) => ScreenUpdate();                
+            timer.Tick += (sender, obj) => ScreenUpdate();
+            timer.Tick += (sender, obj) => GameStateCheck();
+        }
+
+        private void GameStateCheck()
+        {
+            if (game == null)
+                return;
+
+            if (game.State != GameState.InProgress)
+                Close();
         }
 
         private void OnGameTimerTick()

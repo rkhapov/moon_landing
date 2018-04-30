@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 using Core.Controls;
@@ -15,13 +16,13 @@ namespace Core.Game
 
     public class Game
     {
-        public Controller Controller { get; private set; }
+        public IController Controller { get; private set; }
         public Level Level { get; private set; }
         public GameState State { get; private set; }
 
-        public Game(Level level)
+        public Game(Level level, IController controller)
         {
-            Controller = new Controller();
+            Controller = controller;
             Controller.Tick += OnWorldUpdate;
             Controller.KeyDown += OnKeyDown;
             Controller.KeyUp += OnKeyUp;
@@ -41,14 +42,17 @@ namespace Core.Game
 
         private void UpdateGameState()
         {
-            var collideObject = GetShipCollidesObject();
-            //TODO: make checking for landing and setting game sate
+            var collideObjects = GetShipCollidesObject();
+
+            if (collideObjects.Count != 0)
+                State = GameState.Failed;
         }
 
-        private IPhysObject GetShipCollidesObject()
-        {
-            throw new NotImplementedException();
-            return Level.Objects.FirstOrDefault(Level.Ship.IntersectsWith);
+        private List<IPhysObject> GetShipCollidesObject()
+        {   
+            return Level.Objects
+                .Where(Level.Ship.IntersectsWith)
+                .ToList();
         }
 
         private void OnKeyDown(Keys key)
