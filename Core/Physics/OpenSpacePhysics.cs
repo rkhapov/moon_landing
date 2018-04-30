@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Core.Objects;
+using Core.Tools;
 
 namespace Core.Physics
 {
@@ -15,9 +16,7 @@ namespace Core.Physics
         
         private static void UpdateObject(IPhysObject obj, double dt)
         {
-            obj.Velocity += obj.Acceleration * dt;
-            obj.Cords += obj.Velocity * dt;
-            
+            obj.UpdateKinematicsWithGravity(dt, Vector.Zero);
             obj.Update(dt);
         }
     }

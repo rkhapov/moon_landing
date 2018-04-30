@@ -1,6 +1,8 @@
 ﻿using System;
 using Core.Objects;
 using Core.Tools;
+using FluentAssertions;
+using NSubstitute;
 using NUnit.Framework;
 using Size = Core.Tools.Size;
 
@@ -131,6 +133,100 @@ namespace Core.Tests
             var obj = new Obg(cord, new Size(1, 1));
             var otherObj = new Obg(cord, new Size(1, 1));
             Assert.AreEqual(true, obj.IntersectsWith(otherObj));
+        }
+        
+        [Test]
+        [Repeat(10)]
+        public void UpdateKinematicsWithGravity_WithoutAcceleration_ShouldEnforceNewtonFirstLaw()
+        {
+            var physObject = Substitute.For<IPhysObject>();
+            physObject.Cords = GetRandomVector();
+            physObject.Velocity = GetRandomVector();
+            physObject.Acceleration = Vector.Zero;
+            var expectedCords = physObject.Cords;
+            var expectedVelocity = physObject.Velocity;
+            var expectedAcceleration = physObject.Acceleration;
+
+            var dt = 0.05;
+            for (var t = 0.0; t < 10; t += dt)
+            {
+                physObject.Cords.Should().BeEquivalentTo(expectedCords + expectedVelocity * t);
+                /*physObject.Velocity.Should().BeEquivalentTo(expectedVelocity);
+                physObject.Acceleration.Should().BeEquivalentTo(expectedAcceleration);*/
+                
+                physObject.UpdateKinematicsWithGravity(dt, Vector.Zero);
+                //expectedCords += expectedVelocity * dt;
+            }
+        }
+
+        [Test]
+        [Repeat(10)]
+        public void UpdateKinematicsWithGravity_NonZeroGravityButZeroMass_ShouldEnforceNewtonFirstLaw()
+        {
+            var physObject = Substitute.For<IPhysObject>();
+            physObject.Cords = GetRandomVector();
+            physObject.Velocity = GetRandomVector();
+            physObject.Acceleration = Vector.Zero;
+            physObject.Mass = 0;
+            var startCords = physObject.Cords;
+            var startVelocity = physObject.Velocity;
+            var gravity = GetRandomVector();
+            var dt = 0.05;
+            
+            for (var t = 0.0; t < 10; t += dt)
+            {
+                physObject.Cords.Should().BeEquivalentTo(startCords + startVelocity * t);
+                physObject.UpdateKinematicsWithGravity(dt, gravity);
+            }
+        }
+        
+        [Test]
+        [Repeat(10)]
+        public void UpdateKinematicsWithGravity_NonZeroAccelerationButZeroMass_ShouldEnforceKinematicsLawsOnShortTimeSegment()
+        {
+            var physObject = Substitute.For<IPhysObject>();
+            physObject.Cords = GetRandomVector();
+            physObject.Velocity = GetRandomVector();
+            physObject.Acceleration = GetRandomVector();
+            physObject.Mass = 0;
+            var startCords = physObject.Cords;
+            var startVelocity = physObject.Velocity;
+            var startAcceleration = physObject.Acceleration;
+            var gravity = GetRandomVector();
+            var dt = 0.00001;
+            
+            for (var t = 0.0; t < 0.005; t += dt)
+            {
+                physObject.Cords.Should().BeEquivalentTo(startCords + startVelocity * t + startAcceleration * t * (t / 2));
+                physObject.Velocity.Should().BeEquivalentTo(startVelocity + startAcceleration * t);
+                physObject.UpdateKinematicsWithGravity(dt, gravity);
+            }
+        }
+        
+        [Test]
+        [Repeat(10)]
+        public void UpdateKinematicsWithGravity_NonZeroAccelerationAndNonZeroMass_ShouldEnforceKinematicsLawsOnShortTimeSegment()
+        {
+            var physObject = Substitute.For<IPhysObject>();
+            physObject.Cords = GetRandomVector();
+            physObject.Velocity = GetRandomVector();
+            physObject.Acceleration = GetRandomVector();
+            physObject.Mass = 1;
+            var startCords = physObject.Cords;
+            var startVelocity = physObject.Velocity;
+            var startAcceleration = physObject.Acceleration;
+            var gravity = GetRandomVector();
+            var dt = 0.00001;
+            
+            for (var t = 0.0; t < 0.005; t += dt)
+            {
+                physObject.Cords.Should()
+                    .BeEquivalentTo(startCords + startVelocity * t + (startAcceleration + gravity) * t * (t / 2));
+                
+                physObject.Velocity.Should().BeEquivalentTo(startVelocity + (startAcceleration + gravity) * t);
+                
+                physObject.UpdateKinematicsWithGravity(dt, gravity);
+            }
         }
     }
 }

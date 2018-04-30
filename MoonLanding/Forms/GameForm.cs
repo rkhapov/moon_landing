@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
-using System.Runtime.Remoting.Channels;
 using System.Windows.Forms;
-using Core.Controls;
 using Core.Game;
 using Core.Objects;
 
-namespace MoonLanding
+namespace MoonLanding.Forms
 {
     public class GameForm : Form
     {

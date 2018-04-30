@@ -1,9 +1,17 @@
 ﻿using System;
+using Core.Tools;
 
 namespace Core.Objects
 {
     public static class PhysObjectExtensions
     {
+        public static void UpdateKinematicsWithGravity(this IPhysObject obj, double dt, Vector gravity)
+        {
+            var actualAcceleration = obj.Acceleration + (obj.Mass == 0 ? Vector.Zero : gravity);
+            obj.Velocity += actualAcceleration * dt;
+            obj.Cords += obj.Velocity * dt;
+        }
+        
         public static bool IsRectangleObjectsIntersects(this IPhysObject obj, IPhysObject otherObj)
         {
             if (ReferenceEquals(obj, otherObj))

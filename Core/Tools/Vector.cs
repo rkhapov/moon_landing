@@ -70,7 +70,7 @@ namespace Core.Tools
 
         private bool FloatEquals(double f1, double f2)
         {
-            return Math.Abs(f1 - f2) < 1e-6;
+            return Math.Abs(f1 - f2) < 1e-3;
         }
 
         public override int GetHashCode()

@@ -8,7 +8,7 @@ using Core.Physics;
 using Core.Tools;
 using Size = System.Drawing.Size;
 
-namespace MoonLanding
+namespace MoonLanding.Forms
 {
     public class MainMenuForm : Form
     {
