@@ -141,7 +141,7 @@ namespace Core.Objects
         {
             var y = FindGround(startX);
             if (y == -1) return false;
-            for (int x = startX; x <= finishX; x++)
+            for (var x = startX; x <= finishX; x++)
             {
                 if (FindGround(x) != y)
                     return false;
@@ -151,11 +151,11 @@ namespace Core.Objects
 
         private int FindGround(int x)
         {
-            var emptyCount = 2;
-            for (int i = emptyCount; i < landscape.GetLength(0); i++)
+            const int emptyCount = 2;
+            for (var i = emptyCount; i < landscape.GetLength(0); i++)
             {
                 var isEmpty = true;
-                for (int j = 1; j <= emptyCount; j++)
+                for (var j = 1; j <= emptyCount; j++)
                     if (landscape[i - j, x] != LandscapeCell.Empty)
                     {
                         isEmpty = false;

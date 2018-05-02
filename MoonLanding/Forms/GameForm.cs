@@ -14,7 +14,8 @@ namespace MoonLanding.Forms
         private Timer timer;
         private Image image;
 
-        private Bitmap disableEngineShipImage;
+        private readonly Bitmap disableEngineShipImage;
+        private readonly Bitmap enableEngineShipImage;
         
         protected override void OnLoad(EventArgs e)
         {
@@ -30,6 +31,7 @@ namespace MoonLanding.Forms
         {
             SetUpTimer();
             disableEngineShipImage = new Bitmap("ship_disabled.png");
+            enableEngineShipImage = new Bitmap("ship_enabled.png");
 
         }
 
@@ -124,9 +126,13 @@ namespace MoonLanding.Forms
         private void DrawShip(Graphics graphics)
         {
             var ship = game.Level.Ship;
-
-            graphics.DrawImage(disableEngineShipImage,
-                new Rectangle((int) ship.Cords.X, (int) ship.Cords.Y, ship.Size.Width, ship.Size.Height));
+            
+            if (ship.EngineEnabled)
+                graphics.DrawImage(enableEngineShipImage,
+                    new Rectangle((int) ship.Cords.X, (int) ship.Cords.Y, ship.Size.Width, ship.Size.Height));
+            else
+                graphics.DrawImage(disableEngineShipImage,
+                    new Rectangle((int) ship.Cords.X, (int) ship.Cords.Y, ship.Size.Width, ship.Size.Height));            
         }
 
         private void DrawInfo(Graphics graphics)
@@ -136,7 +142,8 @@ namespace MoonLanding.Forms
                                 $"Cords: {ship.Cords}\n" +
                                 $"Velocity: {ship.Velocity}\n" +
                                 $"Absolut velocity: {ship.Velocity.Length:0.00}\n" +
-                                $"Physics: {game.Level.Physics.Name}",
+                                $"Physics: {game.Level.Physics.Name}\n" +
+                                $"Direction: {ship.Direction}",
                 new Font(FontFamily.GenericSerif, 10),
                 Brushes.AliceBlue,
                 0, 0);

@@ -16,6 +16,8 @@ namespace Core.Game
 
     public class Game
     {
+        private const double RotationAngle = Math.PI / 180 * 5;
+        
         public IController Controller { get; private set; }
         public Level Level { get; private set; }
         public GameState State { get; private set; }
@@ -60,21 +62,21 @@ namespace Core.Game
             switch (key)
             {
             case Keys.Left:
-                Level.Ship.ChangeDirection(0.05);
+                Level.Ship.Rotate(RotationAngle);
                 break;
             case Keys.Right:
-                Level.Ship.ChangeDirection(-0.05);
+                Level.Ship.Rotate(-RotationAngle);
                 break;
             case Keys.Up:
-//                Level.Ship.EnableEngine();
+                Level.Ship.EnableEngine();
                 break;
             }
         }
 
         private void OnKeyUp(Keys key)
         {
-            /*if (key == Keys.Up)
-                Level.Ship.DisableEngine();*/
+            if (key == Keys.Up)
+                Level.Ship.DisableEngine();
         }
     }
 }

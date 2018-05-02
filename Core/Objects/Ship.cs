@@ -1,31 +1,34 @@
-﻿using Core.Tools;
+﻿using System;
+using Core.Tools;
 
 namespace Core.Objects
 {
     public class Ship : IPhysObject
     {
         public double Fuel { get; private set; }
-        public Vector Direction { get; set; }
+        public Vector Direction { get; private set; }
         public Vector Velocity { get; set; }
         public Vector Acceleration { get; set; }
         public Vector Cords { get; set; }
         public Size Size { get; }
         public int Mass { get; set; }
+        public bool EngineEnabled { get; private set; }
+        public double FuelConsumption { get; private set; }
+        public double EnginePower { get; private set; }
+        
 
-        private Ship(double fuel, Size size, Vector cords, int mass)
+        public Ship(Vector cords, Size size, double fuelConsumption, double enginePower)
         {
+            Cords = cords;
+            Size = size;
             Velocity = Vector.Zero;
             Acceleration = Vector.Zero;
-            Direction = Vector.Create(0, 1);
-            Fuel = fuel;
-            Size = size;
-            Cords = cords;
-            Mass = mass;
-        }
-
-        public static Ship Create(double fuel, Size size, Vector cords, int mass)
-        {
-            return new Ship(fuel, size, cords, mass);
+            Direction = Vector.Create(0, -1);
+            Fuel = 100;
+            Mass = 1;
+            EngineEnabled = false;
+            FuelConsumption = fuelConsumption;
+            EnginePower = enginePower;
         }
 
         public bool IntersectsWith(IPhysObject obj)
@@ -42,27 +45,45 @@ namespace Core.Objects
             return this.IsRectangleObjectsIntersects(obj);
         }
 
-        public void ChangeDirection(double angle)
+        public void Rotate(double angle)
         {
             Direction = Direction.Rotate(angle);
         }
 
-        public void EnableEngine(double dt)
+        public void EnableEngine()
         {
-            double fuelConsumption = 1;
-            Vector engineAcceleration = Vector.Create(1, 0).Rotate(Direction.Angle); // ???
-            Acceleration += engineAcceleration * dt;
-            Fuel -= fuelConsumption * dt;
+            if (EngineEnabled)
+                return;
+
+            if (FuelIsEmpty())
+                return;
+
+            EngineEnabled = true;
+            Acceleration = Direction * EnginePower;
         }
 
-        void IPhysObject.Update(double dt)
+        public void DisableEngine()
         {
-            //TODO: compute fuel
+            Acceleration = Vector.Zero;
+            EngineEnabled = false;
         }
 
-        void Die()
+        public void Update(double dt)
         {
-            // ??
+            if (!EngineEnabled)
+                return;
+
+            Fuel -= dt * FuelConsumption;
+            
+            if (FuelIsEmpty())
+                DisableEngine();
+
+            Acceleration = Direction * EnginePower;
+        }
+
+        private bool FuelIsEmpty()
+        {
+            return Fuel < 1e-3;
         }
     }
 }
