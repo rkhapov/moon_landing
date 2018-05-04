@@ -9,7 +9,7 @@ namespace Core.Tests
     public class VectorTests
     {
         private static readonly Random Random = new Random();
-        
+
         private static double GetRandomDouble(double min = -100, double max = 100)
         {
             return Random.NextDouble() * (max - min) + min;
@@ -19,12 +19,12 @@ namespace Core.Tests
         {
             return Vector.Create(GetRandomDouble(min, max), GetRandomDouble(min, max));
         }
-        
+
         private static Tuple<Vector, Vector> GetRandomVectors()
         {
             return Tuple.Create(GetRandomVector(), GetRandomVector());
         }
-        
+
         [Test]
         [Repeat(100)]
         public void OperatorPlus_ShouldReturnSum()
@@ -48,7 +48,7 @@ namespace Core.Tests
 
             sut.Should().BeEquivalentTo(expected);
         }
-        
+
         [Test]
         [Repeat(100)]
         public void OperatorScalarMul_ShouldReturnMultiplition()
@@ -77,11 +77,11 @@ namespace Core.Tests
         public void Length_ShouldReturnRightValue(double x, double y, double expected)
         {
             var sut = Vector.Create(x, y);
-            
+
             sut.Length.Should().BeInRange(expected - 1e-6, expected + 1e-6);
         }
 
-        
+
         [TestCase(0, 0, 0, Description = "Zero vector have 0 angle")]
         [TestCase(0, 1, Math.PI / 2)]
         [TestCase(-1, 0, Math.PI)]
@@ -92,7 +92,7 @@ namespace Core.Tests
         public void Angle_ShouldReturnRightValue(double x, double y, double expected)
         {
             var sut = Vector.Create(x, y);
-            
+
             sut.Angle.Should().BeInRange(expected - 1e-3, expected + 1e-3);
         }
 
@@ -101,25 +101,27 @@ namespace Core.Tests
         public void Norm_ShoudReturnRightValue()
         {
             var vector = GetRandomVector();
-            
+
             var sut = vector.Norm;
 
             sut.Length.Should().BeInRange(1 - 1e-6, 1 + 1e-6);
             sut.Angle.Should().BeInRange(vector.Angle - 1e-3, vector.Angle + 1e-3);
         }
 
-        [Test]
-        public void Rotate_ShouldReturnRightValue()
+        [TestCase(1, 0, Math.PI / 2, 0, 1)]
+        [TestCase(1, 0, Math.PI / 4, 0.707106, 0.707106)]
+        [TestCase(1, 0, -Math.PI / 4, 0.707106,- 0.707106)]
+        [TestCase(1, 0, Math.PI, -1, 0)]
+        [TestCase(1, 0, -Math.PI, -1, 0)]
+        [TestCase(0.707106, 0.707106, Math.PI/2, -0.707106, 0.707106)]
+        public void Rotate_ShouldReturnRightValue(double x1, double y1, double angle, double x, double y)
         {
-            var sut = Vector.Create(1, 0);
+            var sut = Vector.Create(x1, y1);
 
-            var tt1 = sut.Rotate(Math.PI / 2);
-            
-            tt1.Should().BeEquivalentTo(Vector.Create(0, 1));
+            var tt1 = sut.Rotate(angle);
 
-            var tt2 = tt1.Rotate(Math.PI / 2);
-            
-            tt2.Should().BeEquivalentTo(Vector.Create(-1, 0));
+            tt1.Should().BeEquivalentTo(Vector.Create(x, y));
+            tt1.Angle.Should().BeInRange(angle + sut.Angle - 1e-3, angle + sut.Angle + 1e-3);
         }
     }
 }
