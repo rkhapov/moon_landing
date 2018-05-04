@@ -16,7 +16,7 @@ namespace Core.Game
 
     public class Game
     {
-        private const double RotationAngle = Math.PI / 180 * 5;
+        private const double RotationAngle = 15;
         
         public IController Controller { get; private set; }
         public Level Level { get; private set; }

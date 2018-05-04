@@ -107,5 +107,19 @@ namespace Core.Tests
             sut.Length.Should().BeInRange(1 - 1e-6, 1 + 1e-6);
             sut.Angle.Should().BeInRange(vector.Angle - 1e-3, vector.Angle + 1e-3);
         }
+
+        [Test]
+        public void Rotate_ShouldReturnRightValue()
+        {
+            var sut = Vector.Create(1, 0);
+
+            var tt1 = sut.Rotate(Math.PI / 2);
+            
+            tt1.Should().BeEquivalentTo(Vector.Create(0, 1));
+
+            var tt2 = tt1.Rotate(Math.PI / 2);
+            
+            tt2.Should().BeEquivalentTo(Vector.Create(-1, 0));
+        }
     }
 }

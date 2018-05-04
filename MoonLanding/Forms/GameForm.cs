@@ -127,12 +127,18 @@ namespace MoonLanding.Forms
         {
             var ship = game.Level.Ship;
             
-            if (ship.EngineEnabled)
-                graphics.DrawImage(enableEngineShipImage,
-                    new Rectangle((int) ship.Cords.X, (int) ship.Cords.Y, ship.Size.Width, ship.Size.Height));
-            else
-                graphics.DrawImage(disableEngineShipImage,
-                    new Rectangle((int) ship.Cords.X, (int) ship.Cords.Y, ship.Size.Width, ship.Size.Height));            
+            var centerX = (float)(2 * ship.Cords.X + ship.Size.Width) / 2.0f;
+            var centerY = (float)(2 * ship.Cords.Y + ship.Size.Height) / 2.0f;
+            
+            graphics.TranslateTransform(centerX, centerY);
+            graphics.RotateTransform((float)ship.Direction.Angle);
+            
+            graphics.DrawImage(ship.EngineEnabled ? enableEngineShipImage : disableEngineShipImage,
+                new Rectangle(-ship.Size.Width / 2, -ship.Size.Height / 2,
+                    ship.Size.Width, ship.Size.Height));
+            graphics.RotateTransform(-(float)ship.Direction.Angle);    
+            
+            graphics.TranslateTransform(-centerX, -centerY);
         }
 
         private void DrawInfo(Graphics graphics)
