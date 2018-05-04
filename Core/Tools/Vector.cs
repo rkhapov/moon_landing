@@ -80,8 +80,9 @@ namespace Core.Tools
 
         public Vector Rotate(double angle)
         {
-            return Create(X * Math.Cos(angle) - Y * Math.Sin(angle),
-                X * Math.Sin(angle) - Y * Math.Cos(angle));
+            return Create(
+                X * Math.Cos(angle) - Y * Math.Sin(angle),
+                X * Math.Sin(angle) + Y * Math.Cos(angle));
         }
 
         public override string ToString()

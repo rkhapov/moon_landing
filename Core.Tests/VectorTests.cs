@@ -85,6 +85,7 @@ namespace Core.Tests
         [TestCase(0, 0, 0, Description = "Zero vector have 0 angle")]
         [TestCase(0, 1, Math.PI / 2)]
         [TestCase(-1, 0, Math.PI)]
+        [TestCase(0, -1, -Math.PI / 2)]
         [TestCase(-100, 0, Math.PI)]
         [TestCase(1, 1, Math.PI / 4)]
         [TestCase(2, 2, Math.PI / 4)]
@@ -120,6 +121,7 @@ namespace Core.Tests
 
             var tt1 = sut.Rotate(angle);
 
+            sut.Length.Should().BeInRange(tt1.Length - 1e-3, tt1.Length + 1e-3);
             tt1.Should().BeEquivalentTo(Vector.Create(x, y));
             tt1.Angle.Should().BeInRange(angle + sut.Angle - 1e-3, angle + sut.Angle + 1e-3);
         }
