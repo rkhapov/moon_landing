@@ -9,13 +9,15 @@ namespace Core.Game
         public Vector StartVelocity { get; set; }
         public double StartFuel { get; set; }
         public string Physics { get; set; }
+        public string Landscape { get; set; }
 
-        public LevelInfo(Vector startPosition, Vector startVelocity, double startFuel, string physics)
+        public LevelInfo(Vector startPosition, Vector startVelocity, double startFuel, string physics, string landscape)
         {
             StartPosition = startPosition;
             StartVelocity = startVelocity;
             StartFuel = startFuel;
             Physics = physics;
+            Landscape = landscape;
         }
 
         public LevelInfo(string path)
@@ -27,6 +29,7 @@ namespace Core.Game
                 StartVelocity = ReadVector(lines[1].Split());
                 StartFuel = double.Parse(lines[2]);
                 Physics = lines[3];
+                Landscape = lines[4];
             }
             catch
             {
@@ -41,7 +44,7 @@ namespace Core.Game
 
         private string[] ToStringArray()
         {
-            return new string[] { StartPosition.ToString(), StartVelocity.ToString(), StartFuel.ToString(), Physics };
+            return new string[] { StartPosition.ToString(), StartVelocity.ToString(), StartFuel.ToString(), Physics, Landscape };
         }
 
         public void WriteLevelInFile(LevelInfo levelInfo, string fileName)
