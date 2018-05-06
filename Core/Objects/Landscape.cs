@@ -11,27 +11,39 @@ namespace Core.Objects
         public Vector Velocity
         {
             get => Vector.Zero;
-            set { /*cant set velocity of landscape*/ }
+            set
+            {
+                /*cant set velocity of landscape*/
+            }
         }
 
-        public Vector Acceleration 
+        public Vector Acceleration
         {
             get => Vector.Zero;
-            set { /*cant set acceleration of landscape*/ }
+            set
+            {
+                /*cant set acceleration of landscape*/
+            }
         }
-        
-        public Vector Cords 
+
+        public Vector Cords
         {
             get => Vector.Zero;
-            set { /*cant set cords of landscape*/ }
+            set
+            {
+                /*cant set cords of landscape*/
+            }
         }
-        
-        public int Mass 
+
+        public int Mass
         {
             get => 0;
-            set { /*cant set mass of landscape*/ }
+            set
+            {
+                /*cant set mass of landscape*/
+            }
         }
-        
+
         public Size Size { get; }
 
         public void Update(double dt)
@@ -58,17 +70,22 @@ namespace Core.Objects
         {
             return landscape[y, x];
         }
-        
+
         public Landscape SetCell(int y, int x, LandscapeCell value)
         {
             landscape[y, x] = value;
-            
+
             return this;
         }
 
         public bool GroundAt(int y, int x)
         {
             return GetCell(y, x) == LandscapeCell.Ground;
+        }
+
+        public bool IsBorder(int x, int y)
+        {
+            return y > 0 && landscape[y, x] == LandscapeCell.Ground && landscape[y - 1, x] != LandscapeCell.Ground;
         }
 
         public bool InBound(int y, int x)
@@ -94,7 +111,7 @@ namespace Core.Objects
         public static Landscape LoadFromImageFile(string path, Func<Color, LandscapeCell> cellPredicate)
         {
             var image = new Bitmap(path);
-            
+
             return LoadFromImage(image, cellPredicate);
         }
 
@@ -113,7 +130,7 @@ namespace Core.Objects
 
             if (ReferenceEquals(obj, null))
                 return false;
-            
+
             if (obj is Landscape)
                 throw new ArgumentException("Cant intersect Landscape and Landscape");
 
@@ -122,13 +139,13 @@ namespace Core.Objects
 
         private bool Intersects(IPhysObject obj)
         {
-            for (var y = (int)Math.Floor(obj.Cords.Y); y < (int)Math.Ceiling(obj.Cords.Y) + obj.Size.Height; y++)
+            for (var y = (int) Math.Floor(obj.Cords.Y); y < (int) Math.Ceiling(obj.Cords.Y) + obj.Size.Height; y++)
             {
                 for (var x = (int) Math.Floor(obj.Cords.X); x < (int) Math.Ceiling(obj.Cords.X) + obj.Size.Width; x++)
                 {
                     if (!InBound(y, x))
                         continue;
-                    
+
                     if (GroundAt(y, x))
                         return true;
                 }
@@ -136,37 +153,24 @@ namespace Core.Objects
 
             return false;
         }
-        
-        public bool IsLandingSite(int startX,int finishX)
+
+        public bool IsObjectLanded(IPhysObject obj)
         {
-            var y = FindGround(startX);
-            if (y == -1) return false;
+            return IsLandingSite((int)Math.Floor(obj.Cords.X), (int) Math.Ceiling(obj.Cords.X + obj.Size.Width - 1),
+                (int) Math.Ceiling(obj.Cords.Y + obj.Size.Height));
+        }
+
+        public bool IsLandingSite(int startX, int finishX, int y)
+        {
             for (var x = startX; x <= finishX; x++)
             {
-                if (FindGround(x) != y)
+                if (!IsBorder(x, y))
                     return false;
             }
+
             return true;
         }
 
-        private int FindGround(int x)
-        {
-            const int emptyCount = 2;
-            for (var i = emptyCount; i < landscape.GetLength(0); i++)
-            {
-                var isEmpty = true;
-                for (var j = 1; j <= emptyCount; j++)
-                    if (landscape[i - j, x] != LandscapeCell.Empty)
-                    {
-                        isEmpty = false;
-                        break;
-                    }
-                if (isEmpty && landscape[i, x] == LandscapeCell.Ground)
-                    return i;
-            }
-            return -1;
-        }
-        
         private void FillFromText(List<string> text, Func<char, LandscapeCell> cellPredicate)
         {
             for (var i = 0; i < Size.Height; i++)
