@@ -125,5 +125,16 @@ namespace Core.Tests
             tt1.Should().BeEquivalentTo(Vector.Create(x, y));
             tt1.Angle.Should().BeInRange(angle + sut.Angle - 1e-3, angle + sut.Angle + 1e-3);
         }
+
+        [Test]
+        [Random(100)]
+        public void Rotate_ShouldSafeVectorLength()
+        {
+            var vector = Vector.Create(0, 1);
+
+            var sut = vector.Rotate(GetRandomDouble());
+
+            sut.Length.Should().BeInRange(vector.Length - 1e-3, vector.Length + 1e-3);
+        }
     }
 }

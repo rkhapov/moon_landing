@@ -129,14 +129,16 @@ namespace MoonLanding.Forms
             
             var centerX = (float)(2 * ship.Cords.X + ship.Size.Width) / 2.0f;
             var centerY = (float)(2 * ship.Cords.Y + ship.Size.Height) / 2.0f;
+            var angle = (float) (ship.Direction.Angle * 180 / Math.PI + 90);
             
             graphics.TranslateTransform(centerX, centerY);
-            graphics.RotateTransform((float)ship.Direction.Angle);
+            
+            graphics.RotateTransform(angle);
             
             graphics.DrawImage(ship.EngineEnabled ? enableEngineShipImage : disableEngineShipImage,
                 new Rectangle(-ship.Size.Width / 2, -ship.Size.Height / 2,
                     ship.Size.Width, ship.Size.Height));
-            graphics.RotateTransform(-(float)ship.Direction.Angle);    
+            graphics.RotateTransform(-angle);    
             
             graphics.TranslateTransform(-centerX, -centerY);
         }
