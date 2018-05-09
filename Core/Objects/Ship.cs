@@ -5,7 +5,7 @@ namespace Core.Objects
 {
     public class Ship : IPhysObject
     {
-        public double Fuel { get; private set; }
+        public double Fuel { get; set; }
         public Vector Direction { get; private set; }
         public Vector Velocity { get; set; }
         public Vector Acceleration { get; set; }
@@ -73,10 +73,14 @@ namespace Core.Objects
             if (!EngineEnabled)
                 return;
 
-            Fuel -= dt * FuelConsumption;
-            
+
             if (FuelIsEmpty())
+            {
                 DisableEngine();
+                return;
+            }
+
+            Fuel -= dt * FuelConsumption;
 
             Acceleration = Direction * EnginePower;
         }
