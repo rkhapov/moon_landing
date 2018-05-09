@@ -52,7 +52,7 @@ namespace MoonLanding.Forms
         {
             var landscape = Landscape.LoadFromImageFile("landscape_test.png",
                 color => color.R + color.B + color.G < 100 ? LandscapeCell.Ground : LandscapeCell.Empty);
-            var level = Level.Create(landscape, Enumerable.Empty<IPhysObject>(), new EarthPhysics(),
+            var level = Level.Create(landscape, Enumerable.Empty<IPhysObject>(), new MoonPhysics(),
                 new Ship(Vector.Create(300, 10), Core.Tools.Size.Create(30, 30), 1, 20));
             return new Game(level, new Controller());
         }

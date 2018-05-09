@@ -16,7 +16,7 @@ namespace Core.Game
 
     public class Game
     {
-        private const double RotationAngle = Math.PI / 15;
+        private const double RotationAngle = Math.PI / 20;
         
         public IController Controller { get; private set; }
         public Level Level { get; private set; }
@@ -62,10 +62,10 @@ namespace Core.Game
             switch (key)
             {
             case Keys.Left:
-                Level.Ship.Rotate(RotationAngle);
+                Level.Ship.Rotate(-RotationAngle);
                 break;
             case Keys.Right:
-                Level.Ship.Rotate(-RotationAngle);
+                Level.Ship.Rotate(+RotationAngle);
                 break;
             case Keys.Up:
                 Level.Ship.EnableEngine();
