@@ -17,7 +17,7 @@ namespace MoonLanding.Forms
 
         private readonly Bitmap disableEngineShipImage;
         private readonly Bitmap enableEngineShipImage;
-        private readonly SoundPlayer soundPlayer;
+        private readonly SoundPlayer enginePlayer;
         
         protected override void OnLoad(EventArgs e)
         {
@@ -32,9 +32,9 @@ namespace MoonLanding.Forms
         public GameForm()
         {
             SetUpTimer();
-            disableEngineShipImage = new Bitmap("ship_disabled.png");
-            enableEngineShipImage = new Bitmap("ship_enabled.png");
-//            soundPlayer = new SoundPlayer("engine.wav");
+            disableEngineShipImage = new Bitmap("../resources/ship_disabled.png");
+            enableEngineShipImage = new Bitmap("../resources/ship_enabled.png");
+            enginePlayer = new SoundPlayer("../resources/engine.wav");
         }
 
         public void SetGame(Game game)
@@ -67,10 +67,7 @@ namespace MoonLanding.Forms
         {
             if (game.State != GameState.InProgress)
                 return;
-            
-//            if (game.Level.Ship.EngineEnabled)
-//                soundPlayer.Play();
-            
+
             game.Controller.ProvideTick(TimerInterval / 1000.0);
         }
         
@@ -80,6 +77,9 @@ namespace MoonLanding.Forms
             if (game.State != GameState.InProgress)
                 return;
             
+            if (e.KeyCode == Keys.Up && !game.Level.Ship.EngineEnabled)
+                enginePlayer.PlayLooping();
+            
             game.Controller.ProvideKeyDown(e.KeyCode);
         }
 
@@ -88,6 +88,9 @@ namespace MoonLanding.Forms
             base.OnKeyDown(e);
             if (game.State != GameState.InProgress)
                 return;
+            
+            if (e.KeyCode == Keys.Up)
+                enginePlayer.Stop();
             
             game.Controller.ProvideKeyUp(e.KeyCode);
         }
