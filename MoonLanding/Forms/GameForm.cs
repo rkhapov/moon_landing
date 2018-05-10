@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Media;
 using System.Windows.Forms;
 using Core.Game;
 using Core.Objects;
@@ -16,6 +17,7 @@ namespace MoonLanding.Forms
 
         private readonly Bitmap disableEngineShipImage;
         private readonly Bitmap enableEngineShipImage;
+        private readonly SoundPlayer soundPlayer;
         
         protected override void OnLoad(EventArgs e)
         {
@@ -32,7 +34,7 @@ namespace MoonLanding.Forms
             SetUpTimer();
             disableEngineShipImage = new Bitmap("ship_disabled.png");
             enableEngineShipImage = new Bitmap("ship_enabled.png");
-
+//            soundPlayer = new SoundPlayer("engine.wav");
         }
 
         public void SetGame(Game game)
@@ -59,32 +61,34 @@ namespace MoonLanding.Forms
             timer = new Timer() {Interval = TimerInterval};
             timer.Tick += (sender, obj) => OnGameTimerTick();
             timer.Tick += (sender, obj) => ScreenUpdate();
-            timer.Tick += (sender, obj) => GameStateCheck();
-        }
-
-        private void GameStateCheck()
-        {
-            if (game == null)
-                return;
-
-            if (game.State != GameState.InProgress)
-                Close();
         }
 
         private void OnGameTimerTick()
         {
+            if (game.State != GameState.InProgress)
+                return;
+            
+//            if (game.Level.Ship.EngineEnabled)
+//                soundPlayer.Play();
+            
             game.Controller.ProvideTick(TimerInterval / 1000.0);
         }
         
         protected override void OnKeyDown(KeyEventArgs e)
         {
             base.OnKeyDown(e);
+            if (game.State != GameState.InProgress)
+                return;
+            
             game.Controller.ProvideKeyDown(e.KeyCode);
         }
 
         protected override void OnKeyUp(KeyEventArgs e)
         {
             base.OnKeyDown(e);
+            if (game.State != GameState.InProgress)
+                return;
+            
             game.Controller.ProvideKeyUp(e.KeyCode);
         }
         
@@ -100,13 +104,39 @@ namespace MoonLanding.Forms
         {
             graphics.SmoothingMode = SmoothingMode.AntiAlias;
             graphics.FillRectangle(Brushes.Black, ClientRectangle);
-
-            if (game == null)
-                return;
-
+            
             DrawLandscape(graphics);
             DrawShip(graphics);
             DrawInfo(graphics);
+            if (game.State != GameState.InProgress)
+                DrawStateString(graphics);
+        }
+
+        private void DrawStateString(Graphics graphics)
+        {
+            var x = game.Level.Landscape.Size.Width / 2;
+            var y = game.Level.Landscape.Size.Height / 2;
+            
+            graphics.DrawString(GetGameStateString(),
+                new Font(FontFamily.GenericSerif, 15),
+                Brushes.AliceBlue,
+                x, y);
+        }
+
+        private string GetGameStateString()
+        {
+            switch (game.State)
+            {
+            case GameState.Failed:
+                return "You crashed";
+                break;
+            case GameState.Success:
+                return "You landed successfully!";
+            case GameState.InProgress:
+                return "In progress";
+            default:
+                throw new ArgumentOutOfRangeException();
+            }
         }
 
         private void DrawLandscape(Graphics graphics)
@@ -127,8 +157,8 @@ namespace MoonLanding.Forms
         {
             var ship = game.Level.Ship;
             
-            var centerX = (float)(2 * ship.Cords.X + ship.Size.Width) / 2.0f;
-            var centerY = (float)(2 * ship.Cords.Y + ship.Size.Height) / 2.0f;
+            var centerX = (float)(2 * ship.Cords.X + ship.Size.Width) / 2;
+            var centerY = (float)(2 * ship.Cords.Y + ship.Size.Height) / 2;
             var angle = (float) (ship.Direction.Angle * 180 / Math.PI + 90);
             
             graphics.TranslateTransform(centerX, centerY);
@@ -146,6 +176,8 @@ namespace MoonLanding.Forms
         private void DrawInfo(Graphics graphics)
         {
             var ship = game.Level.Ship;
+            var x = (int)ship.Cords.X > game.Level.Landscape.Size.Width / 2 ? 0 : game.Level.Landscape.Size.Width - 150; 
+            
             graphics.DrawString($"Fuel: {ship.Fuel:0.00}\n" +
                                 $"Cords: {ship.Cords}\n" +
                                 $"Velocity: {ship.Velocity}\n" +
@@ -154,7 +186,7 @@ namespace MoonLanding.Forms
                                 $"Direction: {ship.Direction}",
                 new Font(FontFamily.GenericSerif, 10),
                 Brushes.AliceBlue,
-                0, 0);
+                x, 0);
         }
     }
 }

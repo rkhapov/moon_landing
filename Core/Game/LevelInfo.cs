@@ -1,4 +1,6 @@
-﻿using System.IO;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using Core.Tools;
 
 namespace Core.Game
@@ -22,14 +24,13 @@ namespace Core.Game
 
         public LevelInfo(string path)
         {
-            var lines = File.ReadAllLines(path);
             try
             {
-                StartPosition = ReadVector(lines[0].Split());
-                StartVelocity = ReadVector(lines[1].Split());
-                StartFuel = double.Parse(lines[2]);
-                Physics = lines[3];
-                Landscape = lines[4];
+//                StartPosition = ReadVector(lines[0].Split());
+//                StartVelocity = ReadVector(lines[1].Split());
+//                StartFuel = double.Parse(lines[2]);
+//                Physics = lines[3];
+//                Landscape = lines[4];
             }
             catch
             {
@@ -50,6 +51,18 @@ namespace Core.Game
         public void WriteLevelInFile(LevelInfo levelInfo, string fileName)
         {
             File.WriteAllLines(fileName, levelInfo.ToStringArray());
+        }
+        
+        public static LevelInfo CreateFromText(IReadOnlyList<string> text)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static LevelInfo CreateFromFile(string path)
+        {
+            var text = File.ReadAllLines(path); 
+
+            return CreateFromText(text);
         }
     }
 }
