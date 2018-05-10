@@ -12,14 +12,15 @@ namespace Core.Tests
         public void ReadLevelInfoFromText()
         {
             var str = new string[] { "-1 1", "1,120 -1,600", "100", "moon", "picture1.png" };
-            var info = new LevelInfo(Vector.Create(-1, 1), Vector.Create(1.12, -1.6), 100, "moon", "picture1.png");
-            var result = LevelInfo.CreateFromText(str);
+            var expected = new LevelInfo(Vector.Create(-1, 1), Vector.Create(1.12, -1.6), 100, "moon", "picture1.png");
+            
+            var sut = LevelInfo.CreateFromText(str);
 
-            result.StartPosition.Should().BeEquivalentTo(info.StartPosition);
-            result.StartVelocity.Should().BeEquivalentTo(info.StartVelocity);
-            result.StartFuel.Should().BeInRange(info.StartFuel - 1e-6, info.StartFuel + 1e-6);
-            result.Landscape.Should().BeEquivalentTo(info.Landscape);
-            result.Physics.Should().BeEquivalentTo(info.Physics);
+            sut.StartPosition.Should().BeEquivalentTo(expected.StartPosition);
+            sut.StartVelocity.Should().BeEquivalentTo(expected.StartVelocity);
+            sut.StartFuel.Should().BeInRange(expected.StartFuel - 1e-6, expected.StartFuel + 1e-6);
+            sut.Landscape.Should().BeEquivalentTo(expected.Landscape);
+            sut.Physics.Should().BeEquivalentTo(expected.Physics);
         }
     }
 }

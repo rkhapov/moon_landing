@@ -30,7 +30,7 @@ namespace Core.Game
 
         private string[] ToStringArray()
         {
-            return new string[] { StartPosition.ToString(), StartVelocity.ToString(), StartFuel.ToString(), Physics, Landscape };
+            return new[] { StartPosition.ToString(), StartVelocity.ToString(), StartFuel.ToString(), Physics, Landscape };
         }
 
         public void WriteLevelInFile(string fileName)
