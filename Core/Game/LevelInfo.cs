@@ -7,11 +7,11 @@ namespace Core.Game
 {
     public class LevelInfo
     {
-        public Vector StartPosition { get; set; }
-        public Vector StartVelocity { get; set; }
-        public double StartFuel { get; set; }
-        public string Physics { get; set; }
-        public string Landscape { get; set; }
+        public Vector StartPosition { get; }
+        public Vector StartVelocity { get; }
+        public double StartFuel { get; }
+        public string Physics { get; }
+        public string Landscape { get; }
 
         public LevelInfo(Vector startPosition, Vector startVelocity, double startFuel, string physics, string landscape)
         {
@@ -22,25 +22,10 @@ namespace Core.Game
             Landscape = landscape;
         }
 
-        public LevelInfo(string path)
+        private static Vector ReadVector(string str)
         {
-            try
-            {
-//                StartPosition = ReadVector(lines[0].Split());
-//                StartVelocity = ReadVector(lines[1].Split());
-//                StartFuel = double.Parse(lines[2]);
-//                Physics = lines[3];
-//                Landscape = lines[4];
-            }
-            catch
-            {
-                throw new InvalidDataException("Invalid file format.");
-            }
-        }
-
-        private static Vector ReadVector(string[] line)
-        {
-            return Vector.Create(double.Parse(line[0]), double.Parse(line[1]));
+            var tokens = str.Split();
+            return Vector.Create(double.Parse(tokens[0]), double.Parse(tokens[1]));
         }
 
         private string[] ToStringArray()
@@ -48,20 +33,19 @@ namespace Core.Game
             return new string[] { StartPosition.ToString(), StartVelocity.ToString(), StartFuel.ToString(), Physics, Landscape };
         }
 
-        public void WriteLevelInFile(LevelInfo levelInfo, string fileName)
+        public void WriteLevelInFile(string fileName)
         {
-            File.WriteAllLines(fileName, levelInfo.ToStringArray());
+            File.WriteAllLines(fileName, ToStringArray());
         }
-        
+
         public static LevelInfo CreateFromText(IReadOnlyList<string> text)
         {
-            throw new NotImplementedException();
+            return new LevelInfo(ReadVector(text[0]), ReadVector(text[1]), double.Parse(text[2]), text[3], text[4]);
         }
 
         public static LevelInfo CreateFromFile(string path)
         {
-            var text = File.ReadAllLines(path); 
-
+            var text = File.ReadAllLines(path);
             return CreateFromText(text);
         }
     }
