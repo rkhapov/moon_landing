@@ -11,7 +11,7 @@ namespace MoonLanding.Forms
     public class GameForm : Form
     {
         private Game game;
-        private const int TimerInterval = 100 / 6;
+        private const int TimerInterval = 100 / 5;
         private Timer timer;
         private Image image;
 
