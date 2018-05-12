@@ -26,6 +26,15 @@ namespace Core.Objects
             }
         }
 
+        public Vector Direction
+        {
+            get => Vector.Zero;
+            set
+            {
+                /*cant set direction of landscape*/
+            }
+        }
+
         public Vector Cords
         {
             get => Vector.Zero;
@@ -139,9 +148,9 @@ namespace Core.Objects
 
         private bool Intersects(IPhysObject obj)
         {
-            for (var y = (int) Math.Floor(obj.Cords.Y); y < (int) Math.Ceiling(obj.Cords.Y) + obj.Size.Height; y++)
+            for (var y = (int)Math.Floor(obj.Cords.Y); y < (int)Math.Ceiling(obj.Cords.Y) + obj.Size.Height; y++)
             {
-                for (var x = (int) Math.Floor(obj.Cords.X); x < (int) Math.Ceiling(obj.Cords.X) + obj.Size.Width; x++)
+                for (var x = (int)Math.Floor(obj.Cords.X); x < (int)Math.Ceiling(obj.Cords.X) + obj.Size.Width; x++)
                 {
                     if (!InBound(y, x))
                         continue;
@@ -156,8 +165,8 @@ namespace Core.Objects
 
         public bool IsObjectLanded(IPhysObject obj)
         {
-            return IsLandingSite((int)Math.Floor(obj.Cords.X), (int) Math.Ceiling(obj.Cords.X + obj.Size.Width - 1),
-                (int) Math.Ceiling(obj.Cords.Y + obj.Size.Height));
+            return IsLandingSite((int)Math.Floor(obj.Cords.X), (int)Math.Ceiling(obj.Cords.X + obj.Size.Width - 1),
+                (int)Math.Ceiling(obj.Cords.Y + obj.Size.Height));
         }
 
         public bool IsLandingSite(int startX, int finishX, int y)

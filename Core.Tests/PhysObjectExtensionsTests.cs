@@ -28,6 +28,12 @@ namespace Core.Tests
             set => throw new NotImplementedException();
         }
 
+        public Vector Direction
+        {
+            get => throw new NotImplementedException();
+            set => throw new NotImplementedException();
+        }
+
         public Vector Cords { get; set; }
         public Size Size { get; }
 
