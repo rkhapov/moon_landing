@@ -6,6 +6,7 @@ namespace Core.Objects
     {
         Vector Velocity { get; set; }
         Vector Acceleration { get; set; }
+        Vector Direction { get; }
         Vector Cords { get; set; }
         Size Size { get; }
         int Mass { get; set; }
