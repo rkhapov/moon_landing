@@ -1,12 +1,14 @@
 ﻿using System;
+using System.Windows.Forms;
 
 namespace Editor
 {
     public class EntryPoint
     {
+        [STAThread]
         public static void Main()
         {
-            Console.WriteLine("Editor");
+            Application.Run(new EditorForm());
         }
     }
 }
