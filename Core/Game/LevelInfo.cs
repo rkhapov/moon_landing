@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using Core.Objects;
+using Core.Physics;
 using Core.Tools;
 
 namespace Core.Game
@@ -10,16 +13,16 @@ namespace Core.Game
         public Vector StartPosition { get; }
         public Vector StartVelocity { get; }
         public double StartFuel { get; }
-        public string Physics { get; }
-        public string Landscape { get; }
+        public string PhysicsName { get; }
+        public string LandscapeFile { get; }
 
-        public LevelInfo(Vector startPosition, Vector startVelocity, double startFuel, string physics, string landscape)
+        public LevelInfo(Vector startPosition, Vector startVelocity, double startFuel, string physicsName, string landscapeFile)
         {
             StartPosition = startPosition;
             StartVelocity = startVelocity;
             StartFuel = startFuel;
-            Physics = physics;
-            Landscape = landscape;
+            PhysicsName = physicsName;
+            LandscapeFile = landscapeFile;
         }
 
         private static Vector ReadVector(string str)
@@ -28,9 +31,24 @@ namespace Core.Game
             return Vector.Create(double.Parse(tokens[0]), double.Parse(tokens[1]));
         }
 
+        public Level BuildLevel()
+        {
+            var landscape = Landscape.LoadFromImageFile(LandscapeFile,
+                color => color.R + color.B + color.G < 100 ? LandscapeCell.Ground : LandscapeCell.Empty);
+
+            var ship = new Ship(StartPosition, Core.Tools.Size.Create(30, 30), 1, 20)
+            {
+                Velocity = StartVelocity,
+                Fuel = StartFuel
+            };
+
+            return Level.Create(landscape, Enumerable.Empty<IPhysObject>(), new PhysicsFactory().FromName(PhysicsName),
+                ship);
+        }
+
         private string[] ToStringArray()
         {
-            return new[] { StartPosition.ToString(), StartVelocity.ToString(), StartFuel.ToString(), Physics, Landscape };
+            return new[] { StartPosition.ToString(), StartVelocity.ToString(), StartFuel.ToString(), PhysicsName, LandscapeFile };
         }
 
         public void WriteLevelInFile(string fileName)

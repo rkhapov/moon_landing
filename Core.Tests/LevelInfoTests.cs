@@ -19,8 +19,8 @@ namespace Core.Tests
             sut.StartPosition.Should().BeEquivalentTo(expected.StartPosition);
             sut.StartVelocity.Should().BeEquivalentTo(expected.StartVelocity);
             sut.StartFuel.Should().BeInRange(expected.StartFuel - 1e-6, expected.StartFuel + 1e-6);
-            sut.Landscape.Should().BeEquivalentTo(expected.Landscape);
-            sut.Physics.Should().BeEquivalentTo(expected.Physics);
+            sut.LandscapeFile.Should().BeEquivalentTo(expected.LandscapeFile);
+            sut.PhysicsName.Should().BeEquivalentTo(expected.PhysicsName);
         }
     }
 }

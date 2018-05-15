@@ -116,6 +116,8 @@ Use up arrow to accelerate ship",
 
         private static Level GetLevel()
         {
+            var levelInfo = LevelInfo.CreateFromFile(GetLevelFile());
+            
             var landscape = Landscape.LoadFromImageFile(GetLevelFile(),
                 color => color.R + color.B + color.G < 100 ? LandscapeCell.Ground : LandscapeCell.Empty);
             
