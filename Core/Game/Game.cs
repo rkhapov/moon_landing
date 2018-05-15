@@ -4,6 +4,7 @@ using System.Linq;
 using System.Windows.Forms;
 using Core.Controls;
 using Core.Objects;
+using Core.Tools;
 
 namespace Core.Game
 {
@@ -16,7 +17,8 @@ namespace Core.Game
 
     public class Game
     {
-        private const double RotationAngle = Math.PI / 20;
+        public const double MaxVelocityToLand = 20;
+        public const double RotationAngle = Math.PI / 20;
         
         public IController Controller { get; private set; }
         public Level Level { get; private set; }
@@ -47,7 +49,12 @@ namespace Core.Game
             var collideObjects = GetShipCollidesObject();
 
             if (collideObjects.Count != 0)
-                State = GameState.Failed;
+            {
+                if (collideObjects.Count != 1 || collideObjects[0] != Level.Landscape)
+                    State = GameState.Failed;
+                else
+                    SetStateToLanding();
+            }
         }
 
         private List<IPhysObject> GetShipCollidesObject()
@@ -55,6 +62,17 @@ namespace Core.Game
             return Level.Objects
                 .Where(Level.Ship.IntersectsWith)
                 .ToList();
+        }
+
+        private void SetStateToLanding()
+        {
+            var ship = Level.Ship;
+
+            if (ship.Velocity.Length > MaxVelocityToLand ||
+                !Equals(ship.Direction, Ship.NormalDirection))
+                State = GameState.Failed;
+
+            State = Level.Landscape.IsObjectLanded(ship) ? GameState.Success : GameState.Failed;
         }
 
         private void OnKeyDown(Keys key)
