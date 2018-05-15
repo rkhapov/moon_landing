@@ -21,25 +21,32 @@ namespace MoonLanding.Forms
         {
             base.OnLoad(e);
             DoubleBuffered = true;
+            Dock = DockStyle.Fill;
         }
         
-        public ScreenForm(Game game)
+        public ScreenForm()
         {
-            this.game = game;
-            Size = new Size(this.game.Level.Landscape.Size.Width, this.game.Level.Landscape.Size.Height);
-            image = new Bitmap(this.game.Level.Landscape.Size.Width, this.game.Level.Landscape.Size.Height);
-            
             SetupTimer();
             
             disableEngineShipImage = new Bitmap("../resources/ship_disabled.png");
             enableEngineShipImage = new Bitmap("../resources/ship_enabled.png");
         }
 
+        public void SetGame(Game game)
+        {
+            updateTimer.Stop();
+
+            this.game = game;
+            image = new Bitmap(this.game.Level.Landscape.Size.Width, this.game.Level.Landscape.Size.Height);
+
+            updateTimer.Start();
+        }
+
         private void ScreenUpdate()
         {
             if (game == null)
                 return;
-            
+
             Invalidate();
             Update();
         }
@@ -83,11 +90,13 @@ namespace MoonLanding.Forms
 
         private string GetGameStateString()
         {
+            if (game == null)
+                return "Select game";
+            
             switch (game.State)
             {
             case GameState.Failed:
-                return "You crashed";
-                break;
+                return "You crashed";                
             case GameState.Success:
                 return "You landed successfully!";
             case GameState.InProgress:
@@ -99,6 +108,9 @@ namespace MoonLanding.Forms
 
         private void DrawLandscape(Graphics graphics)
         {
+            if (game == null)
+                return;
+            
             var landscape = game.Level.Landscape;
             
             for (var i = 0; i < landscape.Size.Height; i++)
@@ -113,6 +125,9 @@ namespace MoonLanding.Forms
 
         private void DrawShip(Graphics graphics)
         {
+            if (game == null)
+                return;
+            
             var ship = game.Level.Ship;
             
             var centerX = (float)(2 * ship.Cords.X + ship.Size.Width) / 2;
@@ -133,6 +148,9 @@ namespace MoonLanding.Forms
 
         private void DrawInfo(Graphics graphics)
         {
+            if (game == null)
+                return;
+            
             var ship = game.Level.Ship;
             var x = (int)ship.Cords.X > game.Level.Landscape.Size.Width / 2 ? 0 : game.Level.Landscape.Size.Width - 150; 
             

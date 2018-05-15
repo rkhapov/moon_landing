@@ -1,10 +1,14 @@
 ﻿using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Linq;
 using System.Media;
 using System.Windows.Forms;
+using Core.Controls;
 using Core.Game;
 using Core.Objects;
+using Core.Physics;
+using Core.Tools;
 
 namespace MoonLanding.Forms
 {
@@ -13,6 +17,7 @@ namespace MoonLanding.Forms
         private Timer worldUpdateTimer;
         private Game game;
         private const int TimerInterval = 100 / 5; // 50 times per second
+        private ScreenForm gameScreen;
 
         private SoundPlayer enginePlayer;
         
@@ -39,20 +44,18 @@ namespace MoonLanding.Forms
 
         private void SetupUi()
         {
-            var startButton = CreateStartButton();
-            var loadButton = CreateLoadLevelButton();
-            var helpButton = CreateHelpButton();
-            var exitButton = CreateExitButton();
-            
             var table = CreateLayoutTable();
             
-            table.Controls.Add(startButton, 0, 0);
-            table.Controls.Add(loadButton, 0, 1);
-            table.Controls.Add(helpButton, 0, 2);
-            table.Controls.Add(exitButton, 0, 3);
+            table.Controls.Add(CreateStartButton(), 0, 0);
+            table.Controls.Add(CreateLoadLevelButton(), 0, 1);
+            table.Controls.Add(CreateHelpButton(), 0, 2);
+            table.Controls.Add(CreateExitButton(), 0, 3);
+
+            gameScreen = new ScreenForm {TopLevel = false};
+            
+            table.Controls.Add(gameScreen, 1, 1);
 
             table.Controls.Add(new Panel(), 0, 4);
-            table.Controls.Add(new Panel(), 1, 1);
             table.Controls.Add(new Panel(), 1, 2);
 
             Controls.Add(table);
@@ -76,6 +79,8 @@ namespace MoonLanding.Forms
             table.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
 
             table.Dock = DockStyle.Fill;
+            
+            table.CellBorderStyle= TableLayoutPanelCellBorderStyle.Single;            
 
             return table;
         }
@@ -91,11 +96,27 @@ namespace MoonLanding.Forms
         
         private Button CreateLoadLevelButton()
         {
-            return new Button
+            var loadLevelButton = new Button
             {
                 Text = "Load level",
                 Dock = DockStyle.Fill
             };
+
+            loadLevelButton.Click += (s, o) =>
+            {
+                Game InitializeGame()
+                {
+                    var landscape = Landscape.LoadFromImageFile("landscape_test.png",
+                        color => color.R + color.B + color.G < 100 ? LandscapeCell.Ground : LandscapeCell.Empty);
+                    var level = Level.Create(landscape, Enumerable.Empty<IPhysObject>(), new MoonPhysics(),
+                        new Ship(Vector.Create(300, 10), Core.Tools.Size.Create(30, 30), 1, 20));
+                    return new Game(level, new Controller());
+                }
+                
+                SetGame(InitializeGame());
+            };
+            
+            return loadLevelButton;
         }
         
         private Button CreateHelpButton()
@@ -134,15 +155,15 @@ Use up arrow to accelerate ship",
             return exitButton;
         }
 
-//        public void SetGame(Game game)
-//        {
-//            worldUpdateTimer.Stop();
-//            
-//            this.game = game;
-//            image = new Bitmap(this.game.Level.Landscape.Size.Width, this.game.Level.Landscape.Size.Height);
-//            
-//            worldUpdateTimer.Start();
-//        }
+        private void SetGame(Game game)
+        {
+            worldUpdateTimer.Stop();
+
+            this.game = game;
+            gameScreen.SetGame(game);
+            
+            worldUpdateTimer.Start();
+        }
         
         private void SetupTimer()
         {
