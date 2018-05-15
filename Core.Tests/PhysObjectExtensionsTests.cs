@@ -8,52 +8,6 @@ using Size = Core.Tools.Size;
 
 namespace Core.Tests
 {
-    class Obg : IPhysObject
-    {
-        public Obg(Vector cords, Size size)
-        {
-            Cords = cords;
-            Size = size;
-        }
-
-        public Vector Velocity
-        {
-            get => throw new NotImplementedException();
-            set => throw new NotImplementedException();
-        }
-
-        public Vector Acceleration
-        {
-            get => throw new NotImplementedException();
-            set => throw new NotImplementedException();
-        }
-
-        public Vector Direction
-        {
-            get => throw new NotImplementedException();
-            set => throw new NotImplementedException();
-        }
-
-        public Vector Cords { get; set; }
-        public Size Size { get; }
-
-        public int Mass
-        {
-            get => throw new NotImplementedException();
-            set => throw new NotImplementedException();
-        }
-
-
-        public bool IntersectsWith(IPhysObject obj)
-        {
-            return this.IsRectangleObjectsIntersects(obj);
-        }
-
-        public void Update(double dt)
-        {
-            throw new NotImplementedException();
-        }
-    }
 
     [TestFixture]
     class PhysObjectExtensionsTests
@@ -76,19 +30,36 @@ namespace Core.Tests
         {
             var cord = GetRandomVector();
             var size = new Size(Random.Next(), Random.Next());
-            var firstObj = new Obg(cord, size);
-            var secondObj = new Obg(cord, size);
-            Assert.AreEqual(true, firstObj.IntersectsWith(secondObj));
-            Assert.AreEqual(true, secondObj.IntersectsWith(firstObj));
+            
+            var physObj = Substitute.For<IPhysObject>();
+            physObj.Cords.Returns(cord);
+            physObj.Size.Returns(size);
+            physObj.Direction.Returns(Vector.Zero);
+            
+            var otherPhysObject = Substitute.For<IPhysObject>();
+            otherPhysObject.Cords.Returns(cord);
+            otherPhysObject.Size.Returns(size);
+            otherPhysObject.Direction.Returns(Vector.Zero);
+            
+            Assert.AreEqual(true, physObj.IsRectangleObjectsIntersects(otherPhysObject));
+            Assert.AreEqual(true, otherPhysObject.IsRectangleObjectsIntersects(physObj));
         }
 
         [Test]
         public void NestingObg_ShouldReturnTrue()
         {
-            var firstObj = new Obg(Vector.Create(5, 5), new Size(10, 10));
-            var secondObj = new Obg(Vector.Create(1, 1), new Size(20, 20));
-            Assert.AreEqual(true, firstObj.IntersectsWith(secondObj));
-            Assert.AreEqual(true, secondObj.IntersectsWith(firstObj));
+            var physObj = Substitute.For<IPhysObject>();
+            physObj.Cords.Returns(Vector.Create(5, 5));
+            physObj.Size.Returns(new Size(10, 10));
+            physObj.Direction.Returns(Vector.Zero);
+            
+            var otherPhysObject = Substitute.For<IPhysObject>();
+            otherPhysObject.Cords.Returns(Vector.Create(1, 1));
+            otherPhysObject.Size.Returns(new Size(20, 20));
+            otherPhysObject.Direction.Returns(Vector.Zero);
+            
+            Assert.AreEqual(true, physObj.IsRectangleObjectsIntersects(otherPhysObject));
+            Assert.AreEqual(true, otherPhysObject.IsRectangleObjectsIntersects(physObj));
         }
 
         [Test]
@@ -101,34 +72,56 @@ namespace Core.Tests
             DoIntersectObg(Vector.Create(0, 0), new Size(20, 20), Vector.Create(5, 20), new Size(10, 10));
         }
 
-
         private void DoIntersectObg(Vector firstCord, Size firstSize, Vector secondCord, Size secondSize)
         {
-            var firstObj = new Obg(firstCord, firstSize);
-            var secondObj = new Obg(secondCord, secondSize);
-            Assert.AreEqual(true, firstObj.IntersectsWith(secondObj));
-            Assert.AreEqual(true, secondObj.IntersectsWith(firstObj));
+            var physObj = Substitute.For<IPhysObject>();
+            physObj.Cords.Returns(firstCord);
+            physObj.Size.Returns(firstSize);
+            physObj.Direction.Returns(Vector.Zero);
+            
+            var otherPhysObject = Substitute.For<IPhysObject>();
+            otherPhysObject.Cords.Returns(secondCord);
+            otherPhysObject.Size.Returns(secondSize);
+            otherPhysObject.Direction.Returns(Vector.Zero); 
+            
+            Assert.AreEqual(true, physObj.IsRectangleObjectsIntersects(otherPhysObject));
+            Assert.AreEqual(true, otherPhysObject.IsRectangleObjectsIntersects(physObj));
         }
 
         [Test]
         [Repeat(100)]
         public void NoIntersectObg_ShouldReturnFalse()
         {
-            var firstObj = new Obg(Vector.Create(0, 0), new Size(20, 20));
-            var secondObj = new Obg(Vector.Create(Random.Next() + 25, Random.Next() + 25),
-                new Size(Random.Next(), Random.Next()));
-            Assert.AreEqual(false, firstObj.IntersectsWith(secondObj));
-            Assert.AreEqual(false, secondObj.IntersectsWith(firstObj));
+            var physObject = Substitute.For<IPhysObject>();
+            physObject.Cords.Returns(Vector.Create(0, 0));
+            physObject.Size.Returns(new Size(20, 20));
+            physObject.Direction.Returns(Vector.Zero);
+            
+            var otherPhysObject = Substitute.For<IPhysObject>();
+            otherPhysObject.Cords.Returns(Vector.Create(Random.Next() + 25, Random.Next() + 25));
+            otherPhysObject.Size.Returns(new Size(Random.Next(), Random.Next()));
+            otherPhysObject.Direction.Returns(Vector.Zero);
+            
+            Assert.AreEqual(false, physObject.IsRectangleObjectsIntersects(otherPhysObject));
+            Assert.AreEqual(false, otherPhysObject.IsRectangleObjectsIntersects(physObject));
         }
 
         [Test]
         [Repeat(10)]
-        public void Empty_ShouldReturnFalse()
+        public void Empty_ShouldReturnTrue()
         {
             var cord = GetRandomVector();
-            var obj = new Obg(cord, new Size(0, 0));
-            var otherObj = new Obg(cord, new Size(0, 0));
-            Assert.AreEqual(true, obj.IntersectsWith(otherObj));
+            var physObject = Substitute.For<IPhysObject>();
+            physObject.Cords.Returns(cord);
+            physObject.Size.Returns(new Size(0, 0));
+            physObject.Direction.Returns(Vector.Zero);
+            
+            var otherPhysObject = Substitute.For<IPhysObject>();
+            otherPhysObject.Cords.Returns(cord);
+            otherPhysObject.Size.Returns(new Size(0, 0));
+            otherPhysObject.Direction.Returns(Vector.Zero);
+
+            Assert.AreEqual(true, physObject.IsRectangleObjectsIntersects(otherPhysObject));
         }
 
         [Test]
@@ -136,11 +129,20 @@ namespace Core.Tests
         public void Point_ShouldReturnTrue()
         {
             var cord = GetRandomVector();
-            var obj = new Obg(cord, new Size(1, 1));
-            var otherObj = new Obg(cord, new Size(1, 1));
-            Assert.AreEqual(true, obj.IntersectsWith(otherObj));
+            var physObject = Substitute.For<IPhysObject>();
+            physObject.Cords.Returns(cord);
+            physObject.Size.Returns(new Size(1, 1));
+            physObject.Direction.Returns(Vector.Zero);
+            
+            var otherPhysObject = Substitute.For<IPhysObject>();
+            otherPhysObject.Cords.Returns(cord);
+            otherPhysObject.Size.Returns(new Size(1, 1));
+            otherPhysObject.Direction.Returns(Vector.Zero);
+
+            Assert.AreEqual(true,physObject.IsRectangleObjectsIntersects(otherPhysObject));
         }
-        
+
+
         [Test]
         [Repeat(10)]
         public void UpdateKinematicsWithGravity_WithoutAcceleration_ShouldEnforceNewtonFirstLaw()
@@ -159,7 +161,7 @@ namespace Core.Tests
                 physObject.Cords.Should().BeEquivalentTo(expectedCords + expectedVelocity * t);
                 /*physObject.Velocity.Should().BeEquivalentTo(expectedVelocity);
                 physObject.Acceleration.Should().BeEquivalentTo(expectedAcceleration);*/
-                
+
                 physObject.UpdateKinematicsWithGravity(dt, Vector.Zero);
                 //expectedCords += expectedVelocity * dt;
             }
@@ -178,17 +180,18 @@ namespace Core.Tests
             var startVelocity = physObject.Velocity;
             var gravity = GetRandomVector();
             var dt = 0.05;
-            
+
             for (var t = 0.0; t < 10; t += dt)
             {
                 physObject.Cords.Should().BeEquivalentTo(startCords + startVelocity * t);
                 physObject.UpdateKinematicsWithGravity(dt, gravity);
             }
         }
-        
+
         [Test]
         [Repeat(10)]
-        public void UpdateKinematicsWithGravity_NonZeroAccelerationButZeroMass_ShouldEnforceKinematicsLawsOnShortTimeSegment()
+        public void
+            UpdateKinematicsWithGravity_NonZeroAccelerationButZeroMass_ShouldEnforceKinematicsLawsOnShortTimeSegment()
         {
             var physObject = Substitute.For<IPhysObject>();
             physObject.Cords = GetRandomVector();
@@ -200,18 +203,20 @@ namespace Core.Tests
             var startAcceleration = physObject.Acceleration;
             var gravity = GetRandomVector();
             var dt = 0.00001;
-            
+
             for (var t = 0.0; t < 0.005; t += dt)
             {
-                physObject.Cords.Should().BeEquivalentTo(startCords + startVelocity * t + startAcceleration * t * (t / 2));
+                physObject.Cords.Should()
+                    .BeEquivalentTo(startCords + startVelocity * t + startAcceleration * t * (t / 2));
                 physObject.Velocity.Should().BeEquivalentTo(startVelocity + startAcceleration * t);
                 physObject.UpdateKinematicsWithGravity(dt, gravity);
             }
         }
-        
+
         [Test]
         [Repeat(10)]
-        public void UpdateKinematicsWithGravity_NonZeroAccelerationAndNonZeroMass_ShouldEnforceKinematicsLawsOnShortTimeSegment()
+        public void
+            UpdateKinematicsWithGravity_NonZeroAccelerationAndNonZeroMass_ShouldEnforceKinematicsLawsOnShortTimeSegment()
         {
             var physObject = Substitute.For<IPhysObject>();
             physObject.Cords = GetRandomVector();
@@ -223,14 +228,14 @@ namespace Core.Tests
             var startAcceleration = physObject.Acceleration;
             var gravity = GetRandomVector();
             var dt = 0.00001;
-            
+
             for (var t = 0.0; t < 0.005; t += dt)
             {
                 physObject.Cords.Should()
                     .BeEquivalentTo(startCords + startVelocity * t + (startAcceleration + gravity) * t * (t / 2));
-                
+
                 physObject.Velocity.Should().BeEquivalentTo(startVelocity + (startAcceleration + gravity) * t);
-                
+
                 physObject.UpdateKinematicsWithGravity(dt, gravity);
             }
         }
