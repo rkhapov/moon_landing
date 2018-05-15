@@ -53,12 +53,15 @@ namespace MoonLanding.Forms
 
             gameScreen = new ScreenForm {TopLevel = false};
             
+            
             table.Controls.Add(gameScreen, 1, 1);
 
             table.Controls.Add(new Panel(), 0, 4);
             table.Controls.Add(new Panel(), 1, 2);
 
             Controls.Add(table);
+
+            gameScreen.Visible = true;
         }
 
         private TableLayoutPanel CreateLayoutTable()

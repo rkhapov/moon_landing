@@ -15,7 +15,7 @@ namespace Core.Objects
         public bool EngineEnabled { get; private set; }
         public double FuelConsumption { get; private set; }
         public double EnginePower { get; private set; }
-        
+        public static Vector NormalDirection => Vector.Create(0, -1);
 
         public Ship(Vector cords, Size size, double fuelConsumption, double enginePower)
         {
@@ -23,7 +23,7 @@ namespace Core.Objects
             Size = size;
             Velocity = Vector.Zero;
             Acceleration = Vector.Zero;
-            Direction = Vector.Create(0, -1);
+            Direction = NormalDirection;
             Fuel = 100;
             Mass = 1;
             EngineEnabled = false;
