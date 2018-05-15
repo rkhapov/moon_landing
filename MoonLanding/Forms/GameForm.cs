@@ -10,70 +10,164 @@ namespace MoonLanding.Forms
 {
     public class GameForm : Form
     {
+        private Timer worldUpdateTimer;
         private Game game;
-        private const int TimerInterval = 100 / 5;
-        private Timer timer;
-        private Image image;
+        private const int TimerInterval = 100 / 5; // 50 times per second
 
-        private readonly Bitmap disableEngineShipImage;
-        private readonly Bitmap enableEngineShipImage;
-        private readonly SoundPlayer enginePlayer;
+        private SoundPlayer enginePlayer;
         
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            DoubleBuffered = true;
             WindowState = FormWindowState.Maximized;
-            FormBorderStyle = FormBorderStyle.FixedDialog;
-            MaximizeBox = false;
-            MinimizeBox = false;
+//            FormBorderStyle = FormBorderStyle.FixedDialog;
+//            MaximizeBox = false;
+//            MinimizeBox = false;
         }
 
         public GameForm()
         {
-            SetUpTimer();
-            disableEngineShipImage = new Bitmap("../resources/ship_disabled.png");
-            enableEngineShipImage = new Bitmap("../resources/ship_enabled.png");
+            SetupUi();
+            SetupSound();
+            SetupTimer();
+        }
+
+        private void SetupSound()
+        {
             enginePlayer = new SoundPlayer("../resources/engine.wav");
         }
 
-        public void SetGame(Game game)
+        private void SetupUi()
         {
-            timer.Stop();
+            var startButton = CreateStartButton();
+            var loadButton = CreateLoadLevelButton();
+            var helpButton = CreateHelpButton();
+            var exitButton = CreateExitButton();
             
-            this.game = game;
-            image = new Bitmap(this.game.Level.Landscape.Size.Width, this.game.Level.Landscape.Size.Height);
+            var table = CreateLayoutTable();
             
-            timer.Start();
+            table.Controls.Add(startButton, 0, 0);
+            table.Controls.Add(loadButton, 0, 1);
+            table.Controls.Add(helpButton, 0, 2);
+            table.Controls.Add(exitButton, 0, 3);
+
+            table.Controls.Add(new Panel(), 0, 4);
+            table.Controls.Add(new Panel(), 1, 1);
+            table.Controls.Add(new Panel(), 1, 2);
+
+            Controls.Add(table);
         }
 
-        private void ScreenUpdate()
+        private TableLayoutPanel CreateLayoutTable()
         {
-            if (game == null)
-                return;
-            
-            Invalidate();
-            Update();
+            var table = new TableLayoutPanel();
+
+            const int buttonHeight = 25;
+            const int buttonWidth = 70;
+
+            table.RowStyles.Clear();
+            table.ColumnStyles.Clear();
+            table.RowStyles.Add(new RowStyle(SizeType.Absolute, buttonHeight));
+            table.RowStyles.Add(new RowStyle(SizeType.Absolute, buttonHeight));
+            table.RowStyles.Add(new RowStyle(SizeType.Absolute, buttonHeight));
+            table.RowStyles.Add(new RowStyle(SizeType.Absolute, buttonHeight));
+            table.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+            table.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, buttonWidth));
+            table.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
+
+            table.Dock = DockStyle.Fill;
+
+            return table;
+        }
+
+        private Button CreateStartButton()
+        {
+            return new Button
+            {
+                Text = "Insert coin",
+                Dock = DockStyle.Fill
+            };
         }
         
-        private void SetUpTimer()
+        private Button CreateLoadLevelButton()
         {
-            timer = new Timer() {Interval = TimerInterval};
-            timer.Tick += (sender, obj) => OnGameTimerTick();
-            timer.Tick += (sender, obj) => ScreenUpdate();
+            return new Button
+            {
+                Text = "Load level",
+                Dock = DockStyle.Fill
+            };
+        }
+        
+        private Button CreateHelpButton()
+        {
+            var helpButton = new Button
+            {
+                Text = "Help",
+                Dock = DockStyle.Fill
+            };
+            
+            helpButton.Click += (s, o) =>
+            {
+                MessageBox.Show(this,
+                    @"
+This is the lunar landing game
+Use left and right arrows to rotate ship
+Use up arrow to accelerate ship",
+                    "Help",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information
+                );
+            };
+            
+            return helpButton;
+        }
+        
+        private Button CreateExitButton()
+        {
+            var exitButton = new Button
+            {
+                Text = "Exit",
+                Dock = DockStyle.Fill
+            };
+            exitButton.Click += (s, e) => Close();
+            
+            return exitButton;
+        }
+
+//        public void SetGame(Game game)
+//        {
+//            worldUpdateTimer.Stop();
+//            
+//            this.game = game;
+//            image = new Bitmap(this.game.Level.Landscape.Size.Width, this.game.Level.Landscape.Size.Height);
+//            
+//            worldUpdateTimer.Start();
+//        }
+        
+        private void SetupTimer()
+        {
+            worldUpdateTimer = new Timer() {Interval = TimerInterval};
+            worldUpdateTimer.Tick += (sender, obj) => OnGameTimerTick();
         }
 
         private void OnGameTimerTick()
         {
+            if (game == null)
+                return;
+            
             if (game.State != GameState.InProgress)
                 return;
 
-            game.Controller.ProvideTick(TimerInterval / 1000.0);
+            game.Controller.ProvideTick(TimerInterval / 1000.0); // convert milliseconds to seconds
         }
         
         protected override void OnKeyDown(KeyEventArgs e)
         {
             base.OnKeyDown(e);
+            
+            if (game == null)
+                return;
+            
             if (game.State != GameState.InProgress)
                 return;
             
@@ -86,6 +180,10 @@ namespace MoonLanding.Forms
         protected override void OnKeyUp(KeyEventArgs e)
         {
             base.OnKeyDown(e);
+            
+            if (game == null)
+                return;
+            
             if (game.State != GameState.InProgress)
                 return;
             
@@ -93,103 +191,6 @@ namespace MoonLanding.Forms
                 enginePlayer.Stop();
             
             game.Controller.ProvideKeyUp(e.KeyCode);
-        }
-        
-        protected override void OnPaint(PaintEventArgs pevent)
-        {
-            pevent.Graphics.FillRectangle(Brushes.Bisque, ClientRectangle);
-            DrawTo(Graphics.FromImage(image));
-            pevent.Graphics.DrawImage(image, (ClientRectangle.Width - image.Width) / 2,
-                (ClientRectangle.Height - image.Height) / 2);
-        }
-
-        private void DrawTo(Graphics graphics)
-        {
-            graphics.SmoothingMode = SmoothingMode.AntiAlias;
-            graphics.FillRectangle(Brushes.Black, ClientRectangle);
-            
-            DrawLandscape(graphics);
-            DrawShip(graphics);
-            DrawInfo(graphics);
-            if (game.State != GameState.InProgress)
-                DrawStateString(graphics);
-        }
-
-        private void DrawStateString(Graphics graphics)
-        {
-            var x = game.Level.Landscape.Size.Width / 2;
-            var y = game.Level.Landscape.Size.Height / 2;
-            
-            graphics.DrawString(GetGameStateString(),
-                new Font(FontFamily.GenericSerif, 15),
-                Brushes.AliceBlue,
-                x, y);
-        }
-
-        private string GetGameStateString()
-        {
-            switch (game.State)
-            {
-            case GameState.Failed:
-                return "You crashed";
-                break;
-            case GameState.Success:
-                return "You landed successfully!";
-            case GameState.InProgress:
-                return "In progress";
-            default:
-                throw new ArgumentOutOfRangeException();
-            }
-        }
-
-        private void DrawLandscape(Graphics graphics)
-        {
-            var landscape = game.Level.Landscape;
-            
-            for (var i = 0; i < landscape.Size.Height; i++)
-            {
-                for (var j = 0; j < landscape.Size.Width; j++)
-                {
-                    if (landscape.GetCell(i, j) == LandscapeCell.Ground)
-                        graphics.FillRectangle(Brushes.White, j, i, 1, 1);
-                }
-            }
-        }
-
-        private void DrawShip(Graphics graphics)
-        {
-            var ship = game.Level.Ship;
-            
-            var centerX = (float)(2 * ship.Cords.X + ship.Size.Width) / 2;
-            var centerY = (float)(2 * ship.Cords.Y + ship.Size.Height) / 2;
-            var angle = (float) (ship.Direction.Angle * 180 / Math.PI + 90);
-            
-            graphics.TranslateTransform(centerX, centerY);
-            
-            graphics.RotateTransform(angle);
-            
-            graphics.DrawImage(ship.EngineEnabled ? enableEngineShipImage : disableEngineShipImage,
-                new Rectangle(-ship.Size.Width / 2, -ship.Size.Height / 2,
-                    ship.Size.Width, ship.Size.Height));
-            graphics.RotateTransform(-angle);    
-            
-            graphics.TranslateTransform(-centerX, -centerY);
-        }
-
-        private void DrawInfo(Graphics graphics)
-        {
-            var ship = game.Level.Ship;
-            var x = (int)ship.Cords.X > game.Level.Landscape.Size.Width / 2 ? 0 : game.Level.Landscape.Size.Width - 150; 
-            
-            graphics.DrawString($"Fuel: {ship.Fuel:0.00}\n" +
-                                $"Cords: {ship.Cords}\n" +
-                                $"Velocity: {ship.Velocity}\n" +
-                                $"Absolut velocity: {ship.Velocity.Length:0.00}\n" +
-                                $"Physics: {game.Level.Physics.Name}\n" +
-                                $"Direction: {ship.Direction}",
-                new Font(FontFamily.GenericSerif, 10),
-                Brushes.AliceBlue,
-                x, 0);
         }
     }
 }
