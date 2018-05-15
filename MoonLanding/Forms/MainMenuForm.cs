@@ -111,17 +111,37 @@ Use up arrow to accelerate ship",
 
         private Game InitializeGame()
         {
-            var landscape = Landscape.LoadFromImageFile("landscape_test.png",
-                color => color.R + color.B + color.G < 100 ? LandscapeCell.Ground : LandscapeCell.Empty);
-            var level = Level.Create(landscape, Enumerable.Empty<IPhysObject>(), new MoonPhysics(),
-                new Ship(Vector.Create(300, 10), Core.Tools.Size.Create(30, 30), 1, 20));
-            return new Game(level, new Controller());
+            return new Game(GetLevel(), new Controller());
         }
 
+        private static Level GetLevel()
+        {
+            var landscape = Landscape.LoadFromImageFile(GetLevelFile(),
+                color => color.R + color.B + color.G < 100 ? LandscapeCell.Ground : LandscapeCell.Empty);
+            
+            return Level.Create(landscape, Enumerable.Empty<IPhysObject>(), new MoonPhysics(),
+                new Ship(Vector.Create(300, 10), Core.Tools.Size.Create(30, 30), 1, 20));
+        }
 
         private static string GetLevelFile()
         {
-            return string.Empty;
+            var fileName = string.Empty;
+
+            while (string.IsNullOrEmpty(fileName))
+            {
+                var openFileDialog = new OpenFileDialog
+                {
+                    InitialDirectory = ".",
+                    Filter = "Landscape File(*.BMP;*.JPG;*.PNG)|*.BMP;*.JPG;*.PNG",
+                    FilterIndex = 2,
+                    RestoreDirectory = true
+                };
+
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                    fileName = openFileDialog.FileName;
+            }
+
+            return fileName;
         }
     }
 }

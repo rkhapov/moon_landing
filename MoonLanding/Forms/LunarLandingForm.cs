@@ -66,7 +66,10 @@ namespace MoonLanding.Forms
         private void OnGameTimerTick()
         {
             if (game.State != GameState.InProgress)
+            {
+                enginePlayer.Stop();
                 return;
+            }
 
             game.Controller.ProvideTick(TimerInterval / 1000.0);
         }
