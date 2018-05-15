@@ -45,8 +45,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EntryPoint.cs" />
-    <Compile Include="Forms\GameForm.cs" />
-    <Compile Include="Forms\ScreenForm.cs" />
+    <Compile Include="Forms\LunarLandingForm.cs" />
+    <Compile Include="Forms\MainMenuForm.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

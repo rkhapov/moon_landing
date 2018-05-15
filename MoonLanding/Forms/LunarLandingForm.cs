@@ -1,67 +1,106 @@
 ﻿using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Media;
 using System.Windows.Forms;
 using Core.Game;
 using Core.Objects;
 
 namespace MoonLanding.Forms
 {
-    public class ScreenForm : Form
+    public class LunarLandingForm : Form
     {
         private Game game;
-        private const int TimerInterval = 100 / 3; // 30 times per second
+        private const int TimerInterval = 100 / 5;
+        private Timer timer;
         private Image image;
-        private Timer updateTimer;
-        
+
         private readonly Bitmap disableEngineShipImage;
         private readonly Bitmap enableEngineShipImage;
+        private readonly SoundPlayer enginePlayer;
         
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
             DoubleBuffered = true;
-            Dock = DockStyle.Fill;
+            WindowState = FormWindowState.Maximized;
+            FormBorderStyle = FormBorderStyle.FixedDialog;
+            MaximizeBox = false;
+            MinimizeBox = false;
         }
-        
-        public ScreenForm()
+
+        public LunarLandingForm()
         {
-            SetupTimer();
-            
+            SetUpTimer();
             disableEngineShipImage = new Bitmap("../resources/ship_disabled.png");
             enableEngineShipImage = new Bitmap("../resources/ship_enabled.png");
+            enginePlayer = new SoundPlayer("../resources/engine.wav");
         }
 
         public void SetGame(Game game)
         {
-            updateTimer.Stop();
-
+            timer.Stop();
+            
             this.game = game;
             image = new Bitmap(this.game.Level.Landscape.Size.Width, this.game.Level.Landscape.Size.Height);
-
-            updateTimer.Start();
+            
+            timer.Start();
         }
 
         private void ScreenUpdate()
         {
             if (game == null)
                 return;
-
+            
             Invalidate();
             Update();
         }
         
-        private void SetupTimer()
+        private void SetUpTimer()
         {
-            updateTimer = new Timer() {Interval = TimerInterval};
-            updateTimer.Tick += (sender, obj) => ScreenUpdate();
+            timer = new Timer() {Interval = TimerInterval};
+            timer.Tick += (sender, obj) => OnGameTimerTick();
+            timer.Tick += (sender, obj) => ScreenUpdate();
+        }
+
+        private void OnGameTimerTick()
+        {
+            if (game.State != GameState.InProgress)
+                return;
+
+            game.Controller.ProvideTick(TimerInterval / 1000.0);
+        }
+        
+        protected override void OnKeyDown(KeyEventArgs e)
+        {
+            base.OnKeyDown(e);
+            if (game.State != GameState.InProgress)
+                return;
+            
+            if (e.KeyCode == Keys.Up && !game.Level.Ship.EngineEnabled)
+                enginePlayer.PlayLooping();
+            
+            game.Controller.ProvideKeyDown(e.KeyCode);
+        }
+
+        protected override void OnKeyUp(KeyEventArgs e)
+        {
+            base.OnKeyDown(e);
+            if (game.State != GameState.InProgress)
+                return;
+            
+            if (e.KeyCode == Keys.Up)
+                enginePlayer.Stop();
+            
+            game.Controller.ProvideKeyUp(e.KeyCode);
         }
         
         protected override void OnPaint(PaintEventArgs pevent)
         {
             pevent.Graphics.FillRectangle(Brushes.Bisque, ClientRectangle);
             DrawTo(Graphics.FromImage(image));
-            pevent.Graphics.DrawImage(image, 0, 0);
+            pevent.Graphics.DrawImage(image, (ClientRectangle.Width - image.Width) / 2,
+                (ClientRectangle.Height - image.Height) / 2);
         }
 
         private void DrawTo(Graphics graphics)
@@ -72,7 +111,6 @@ namespace MoonLanding.Forms
             DrawLandscape(graphics);
             DrawShip(graphics);
             DrawInfo(graphics);
-            
             if (game.State != GameState.InProgress)
                 DrawStateString(graphics);
         }
@@ -90,13 +128,11 @@ namespace MoonLanding.Forms
 
         private string GetGameStateString()
         {
-            if (game == null)
-                return "Select game";
-            
             switch (game.State)
             {
             case GameState.Failed:
-                return "You crashed";                
+                return "You crashed";
+                break;
             case GameState.Success:
                 return "You landed successfully!";
             case GameState.InProgress:
@@ -108,9 +144,6 @@ namespace MoonLanding.Forms
 
         private void DrawLandscape(Graphics graphics)
         {
-            if (game == null)
-                return;
-            
             var landscape = game.Level.Landscape;
             
             for (var i = 0; i < landscape.Size.Height; i++)
@@ -125,9 +158,6 @@ namespace MoonLanding.Forms
 
         private void DrawShip(Graphics graphics)
         {
-            if (game == null)
-                return;
-            
             var ship = game.Level.Ship;
             
             var centerX = (float)(2 * ship.Cords.X + ship.Size.Width) / 2;
@@ -148,9 +178,6 @@ namespace MoonLanding.Forms
 
         private void DrawInfo(Graphics graphics)
         {
-            if (game == null)
-                return;
-            
             var ship = game.Level.Ship;
             var x = (int)ship.Cords.X > game.Level.Landscape.Size.Width / 2 ? 0 : game.Level.Landscape.Size.Width - 150; 
             
