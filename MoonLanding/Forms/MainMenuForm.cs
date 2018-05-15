@@ -17,15 +17,15 @@ namespace MoonLanding.Forms
         {
             SetupUi();
         }
-        
+
         private void SetupUi()
         {
             var table = CreateLayoutTable();
-            
+
             table.Controls.Add(CreateStartButton(), 0, 0);
             table.Controls.Add(CreateHelpButton(), 0, 1);
             table.Controls.Add(CreateExitButton(), 0, 2);
-            
+
             Controls.Add(table);
         }
 
@@ -41,8 +41,8 @@ namespace MoonLanding.Forms
             table.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
 
             table.Dock = DockStyle.Fill;
-            
-            table.CellBorderStyle= TableLayoutPanelCellBorderStyle.Single;
+
+            table.CellBorderStyle = TableLayoutPanelCellBorderStyle.Single;
 
             return table;
         }
@@ -56,10 +56,10 @@ namespace MoonLanding.Forms
             };
 
             start.Click += (s, o) => RunGame();
-            
+
             return start;
         }
-        
+
         private Button CreateHelpButton()
         {
             var helpButton = new Button
@@ -67,7 +67,7 @@ namespace MoonLanding.Forms
                 Text = "Help",
                 Dock = DockStyle.Fill
             };
-            
+
             helpButton.Click += (s, o) =>
             {
                 MessageBox.Show(this,
@@ -80,10 +80,10 @@ Use up arrow to accelerate ship",
                     MessageBoxIcon.Information
                 );
             };
-            
+
             return helpButton;
         }
-        
+
         private Button CreateExitButton()
         {
             var exitButton = new Button
@@ -92,21 +92,28 @@ Use up arrow to accelerate ship",
                 Dock = DockStyle.Fill
             };
             exitButton.Click += (s, e) => Close();
-            
+
             return exitButton;
         }
 
         private void RunGame()
         {
-            var game = InitializeGame();
-            
-            var gameForm = new LunarLandingForm();
-            
-            gameForm.SetGame(game);
-            gameForm.Closed += (s, o) => Show();
-            gameForm.Show();
-            
-            Hide();
+            try
+            {
+                var game = InitializeGame();
+
+                var gameForm = new LunarLandingForm();
+
+                gameForm.SetGame(game);
+                gameForm.Closed += (s, o) => Show();
+                gameForm.Show();
+
+                Hide();
+            }
+            catch
+            {
+                // no file inputed or other error
+            }
         }
 
         private Game InitializeGame()
@@ -117,33 +124,24 @@ Use up arrow to accelerate ship",
         private static Level GetLevel()
         {
             var levelInfo = LevelInfo.CreateFromFile(GetLevelFile());
-            
-            var landscape = Landscape.LoadFromImageFile(GetLevelFile(),
-                color => color.R + color.B + color.G < 100 ? LandscapeCell.Ground : LandscapeCell.Empty);
-            
-            return Level.Create(landscape, Enumerable.Empty<IPhysObject>(), new MoonPhysics(),
-                new Ship(Vector.Create(300, 10), Core.Tools.Size.Create(30, 30), 1, 20));
+
+            return levelInfo.BuildLevel();
         }
 
         private static string GetLevelFile()
         {
-            var fileName = string.Empty;
-
-            while (string.IsNullOrEmpty(fileName))
+            var openFileDialog = new OpenFileDialog
             {
-                var openFileDialog = new OpenFileDialog
-                {
-                    InitialDirectory = ".",
-                    Filter = "Landscape File(*.BMP;*.JPG;*.PNG)|*.BMP;*.JPG;*.PNG",
-                    FilterIndex = 2,
-                    RestoreDirectory = true
-                };
+                InitialDirectory = ".",
+                Filter = "Level File(*.*)|*.*",
+                FilterIndex = 2,
+                RestoreDirectory = true
+            };
 
-                if (openFileDialog.ShowDialog() == DialogResult.OK)
-                    fileName = openFileDialog.FileName;
-            }
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+                return openFileDialog.FileName;
 
-            return fileName;
+            throw new FormatException();
         }
     }
 }
