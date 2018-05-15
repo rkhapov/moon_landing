@@ -31,6 +31,19 @@ namespace Core.Objects
 
         public static bool IsObjectsIntersectsNew(this IPhysObject obj, IPhysObject otherObj)
         {
+            if (ReferenceEquals(obj, otherObj))
+                return false;
+
+            if (otherObj == null)
+                return false;
+
+            var x1 = obj.Cords.X;
+            var y1 = obj.Cords.Y;
+            var x2 = x1 + obj.Size.Width * Math.Cos(obj.Direction.Angle) - obj.Size.Height * Math.Sin(obj.Direction.Angle);
+            var y2 = y1 + obj.Size.Height * Math.Sin(obj.Direction.Angle) + obj.Size.Width * Math.Cos(obj.Direction.Angle);
+
+            // k = (y1 - y2) / (x1 - x2);
+            // b = y2 - k * x2;
             // TODO
             return false;
         }
