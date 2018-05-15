@@ -12,7 +12,7 @@ namespace Core.Objects
             obj.Cords += obj.Velocity * dt;
         }
 
-        public static bool IsRectangleObjectsIntersects(this IPhysObject obj, IPhysObject otherObj)
+        private static bool IsRectangleObjectsIntersectsold(this IPhysObject obj, IPhysObject otherObj)
         {
             if (ReferenceEquals(obj, otherObj))
                 return false;
@@ -29,7 +29,7 @@ namespace Core.Objects
             return Math.Min(firstStart + firstLength, secondStart + secondLength) >= Math.Max(firstStart, secondStart);
         }
 
-        public static bool IsRectangleObjectsIntersectsNew(this IPhysObject obj, IPhysObject otherObj)
+        public static bool IsRectangleObjectsIntersects(this IPhysObject obj, IPhysObject otherObj)
         {
             if (ReferenceEquals(obj, otherObj))
                 return false;
@@ -37,7 +37,7 @@ namespace Core.Objects
             if (otherObj == null)
                 return false;
 
-            if (!IsRectangleObjectsIntersects(obj, otherObj))
+            if (!IsRectangleObjectsIntersectsold(obj, otherObj))
                 return false;
 
             var x11 = obj.Cords.X;
@@ -77,20 +77,6 @@ namespace Core.Objects
 
         private static bool AreLinesIntersect(double x1, double y1, double x2, double y2, double x3, double y3, double x4, double y4)
         {
-
-            //var k1 = (y1 - y2) / (x1 - x2);
-            //var b1 = y2 - k1 * x2;
-
-            //var k2 = (y3 - y4) / (x3 - x4);
-            //var b2 = y3 - k2 * x3;
-
-            //if (k1 == k2 && b1 != b2)
-            //    return false;
-            //if (k1 == k2 && b1 == b2)
-            //    return true;
-            //if (k1 != k2)
-            //    return false;
-
             var A1 = y1 - y2;
             var B1 = x2 - x1;
             var C1 = x1 * y2 - x2 * y1;
@@ -110,7 +96,7 @@ namespace Core.Objects
             {
                 var x = -(C1 * B2 - C2 * B1) / (A1 * B2 - A2 * B1);
                 var y = -(A1 * C2 - A2 * C1) / (A1 * B2 - A2 * B1);
-                return (x < Math.Max(x1, x2) && x > Math.Min(x1, x2) && x < Math.Max(y1, y2) && x > Math.Min(y1, y2));
+                return (x <= Math.Max(x1, x2) && x >= Math.Min(x1, x2) && y <= Math.Max(y1, y2) && y >= Math.Min(y1, y2));
             }
         }
     }
