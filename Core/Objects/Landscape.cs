@@ -166,7 +166,7 @@ namespace Core.Objects
         public bool IsObjectLanded(IPhysObject obj)
         {
             return IsLandingSite((int)Math.Floor(obj.Cords.X), (int)Math.Ceiling(obj.Cords.X + obj.Size.Width - 1),
-                (int)Math.Ceiling(obj.Cords.Y + obj.Size.Height));
+                (int)Math.Ceiling(obj.Cords.Y + obj.Size.Height - 1));
         }
 
         public bool IsLandingSite(int startX, int finishX, int y)

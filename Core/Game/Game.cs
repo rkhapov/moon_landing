@@ -71,8 +71,8 @@ namespace Core.Game
             if (ship.Velocity.Length > MaxVelocityToLand ||
                 !Equals(ship.Direction, Ship.NormalDirection))
                 State = GameState.Failed;
-
-            State = Level.Landscape.IsObjectLanded(ship) ? GameState.Success : GameState.Failed;
+            else
+                State = Level.Landscape.IsObjectLanded(ship) ? GameState.Success : GameState.Failed;
         }
 
         private void OnKeyDown(Keys key)
