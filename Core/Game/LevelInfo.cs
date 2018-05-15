@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using Core.Objects;
 using Core.Physics;
 using Core.Tools;
+using System.Linq;
 
 namespace Core.Game
 {
@@ -64,7 +66,22 @@ namespace Core.Game
         public static LevelInfo CreateFromFile(string path)
         {
             var text = File.ReadAllLines(path);
+            text[4] = GetPathToImageRelativeFrom(path, text[4]);
+            
             return CreateFromText(text);
+        }
+
+        private static string GetPathToImageRelativeFrom(string path, string image)
+        {
+            var builder = new StringBuilder();
+
+            var tokens = path.Split(new[] {'\\'}, StringSplitOptions.None);
+            foreach (var token in tokens.Take(tokens.Length - 1))
+                builder.Append($"{token}\\");
+
+            builder.Append(image);
+
+            return builder.ToString();
         }
     }
 }

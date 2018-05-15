@@ -98,8 +98,8 @@ Use up arrow to accelerate ship",
 
         private void RunGame()
         {
-            try
-            {
+//            try
+//            {
                 var game = InitializeGame();
 
                 var gameForm = new LunarLandingForm();
@@ -109,11 +109,11 @@ Use up arrow to accelerate ship",
                 gameForm.Show();
 
                 Hide();
-            }
-            catch
-            {
-                // no file inputed or other error
-            }
+//            }
+//            catch
+//            {
+//                // no file inputed or other error
+//            }
         }
 
         private Game InitializeGame()
@@ -133,7 +133,7 @@ Use up arrow to accelerate ship",
             var openFileDialog = new OpenFileDialog
             {
                 InitialDirectory = ".",
-                Filter = "Level File(*.*)|*.*",
+                Filter = "Level File(*.txt)|*.txt",
                 FilterIndex = 2,
                 RestoreDirectory = true
             };

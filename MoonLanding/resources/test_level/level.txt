@@ -1,0 +1,5 @@
+200 10
+0 0
+50
+moon
+landscape.png
