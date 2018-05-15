@@ -87,8 +87,11 @@ namespace Core.Objects
 
             if (A1 * B2 - A2 * B1 == 0)
             {
-                if (C1 != C2)
-                    return false;
+                if (C1 - C2 < 1e-6)
+                    return (x3 <= Math.Max(x1, x2) && x3 >= Math.Min(x1, x2)) || (x4 <= Math.Max(x1, x2) && x4 >= Math.Min(x1, x2))
+                        || (y3 <= Math.Max(y1, y2) && y3 >= Math.Min(y1, y2)) || (y4 <= Math.Max(y1, y2) && y4 >= Math.Min(y1, y2))
+                        || (x1 <= Math.Max(x3, x4) && x1 >= Math.Min(x3, x4)) || (x2 <= Math.Max(x3, x4) && x2 >= Math.Min(x3, x4))
+                        || (y1 <= Math.Max(y3, y4) && y1 >= Math.Min(y3, y4)) || (y2 <= Math.Max(y3, y4) && y2 >= Math.Min(y3, y4));
                 else
                     return IsSegmentIntersects(x1, Math.Abs(x1 - x2), x3, Math.Abs(x3 - x4)) && IsSegmentIntersects(y1, Math.Abs(y1 - y2), y3, Math.Abs(y3 - y4));
             }
