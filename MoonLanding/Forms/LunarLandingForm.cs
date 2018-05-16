@@ -18,6 +18,7 @@ namespace MoonLanding.Forms
         private readonly Bitmap disableEngineShipImage;
         private readonly Bitmap enableEngineShipImage;
         private readonly SoundPlayer enginePlayer;
+        private readonly SoundPlayer alarmPlayer;
 
         protected override void OnLoad(EventArgs e)
         {
@@ -35,7 +36,8 @@ namespace MoonLanding.Forms
             disableEngineShipImage = new Bitmap("../resources/ship_disabled.png");
             enableEngineShipImage = new Bitmap("../resources/ship_enabled.png");
             enginePlayer = new SoundPlayer("../resources/engine.wav");
-            FormClosing += (s, o) => { enginePlayer.Dispose(); };
+            alarmPlayer = new SoundPlayer("../resources/alarm.wav");
+            FormClosing += (s, o) => { enginePlayer.Stop(); enginePlayer.Dispose(); };
         }
 
         public void SetGame(Game game)
