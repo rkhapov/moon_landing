@@ -85,7 +85,7 @@ namespace Core.Objects
             var B2 = x4 - x3;
             var C2 = x3 * y4 - x4 * y3;
 
-            if (A1 * B2 - A2 * B1 == 0)
+            if (A1 * B2 - A2 * B1 < 1e-6)
             {
                 if (C1 - C2 < 1e-6)
                     return (x3 <= Math.Max(x1, x2) && x3 >= Math.Min(x1, x2)) || (x4 <= Math.Max(x1, x2) && x4 >= Math.Min(x1, x2))

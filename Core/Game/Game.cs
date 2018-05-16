@@ -17,7 +17,7 @@ namespace Core.Game
 
     public class Game
     {
-        public const double MaxVelocityToLand = 20;
+        public const double MaxVelocityToLand = 35;
         public const double RotationAngle = Math.PI / 20;
         
         public IController Controller { get; private set; }

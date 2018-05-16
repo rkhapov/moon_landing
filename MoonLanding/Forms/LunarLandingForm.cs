@@ -11,7 +11,7 @@ namespace MoonLanding.Forms
     public class LunarLandingForm : Form
     {
         private Game game;
-        private const int TimerInterval = 100 / 5;
+        private const int TimerInterval = 100 / 3;
         private Timer timer;
         private Image image;
 
@@ -35,6 +35,7 @@ namespace MoonLanding.Forms
             disableEngineShipImage = new Bitmap("../resources/ship_disabled.png");
             enableEngineShipImage = new Bitmap("../resources/ship_enabled.png");
             enginePlayer = new SoundPlayer("../resources/engine.wav");
+            FormClosing += (s, o) => { enginePlayer.Dispose(); };
         }
 
         public void SetGame(Game game)
@@ -65,11 +66,12 @@ namespace MoonLanding.Forms
 
         private void OnGameTimerTick()
         {
-            if (game.State != GameState.InProgress)
-            {
-                enginePlayer.Stop();
-                return;
-            }
+            //if (game.State != GameState.InProgress)
+            //{
+            //    enginePlayer.Stop();
+            //    enginePlayer.Dispose();
+            //    return;
+            //}
 
             game.Controller.ProvideTick(TimerInterval / 1000.0);
         }
