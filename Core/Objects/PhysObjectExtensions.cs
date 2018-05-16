@@ -40,6 +40,23 @@ namespace Core.Objects
             if (!IsRectangleObjectsIntersectsold(obj, otherObj))
                 return false;
 
+            var firstRectangleTops = GetTops(obj);
+            var secondRectangleTops = GetTops(otherObj);
+
+            var firstRectangleSides = GetSides(firstRectangleTops);
+            var secondRectangleSides = GetSides(secondRectangleTops);
+
+
+            foreach (var firstSide in firstRectangleSides)
+                foreach (var secondSide in secondRectangleSides)
+                    if (AreLinesIntersect(firstSide.Item1, firstSide.Item2, firstSide.Item3, firstSide.Item4, secondSide.Item1, secondSide.Item2, secondSide.Item3, secondSide.Item4))
+                        return true;
+
+            return false;
+        }
+
+        private static double[] GetTops(IPhysObject obj)
+        {
             var x11 = obj.Cords.X;
             var y11 = obj.Cords.Y;
 
@@ -52,27 +69,12 @@ namespace Core.Objects
             var x14 = x11 - obj.Size.Height * Math.Sin(obj.Direction.Angle);
             var y14 = y11 + obj.Size.Height * Math.Cos(obj.Direction.Angle);
 
-            var x21 = otherObj.Cords.X;
-            var y21 = otherObj.Cords.Y;
+            return new double[] { x11, y11, x12, y12, x13, y13, x14, y14 };
+        }
 
-            var x22 = x21 + otherObj.Size.Width * Math.Cos(otherObj.Direction.Angle) - otherObj.Size.Height * Math.Sin(otherObj.Direction.Angle);
-            var y22 = y21 + otherObj.Size.Width * Math.Sin(otherObj.Direction.Angle) + otherObj.Size.Height * Math.Cos(otherObj.Direction.Angle);
-
-            var x23 = x21 + otherObj.Size.Width * Math.Cos(otherObj.Direction.Angle);
-            var y23 = y21 + otherObj.Size.Width * Math.Sin(otherObj.Direction.Angle);
-
-            var x24 = x21 - otherObj.Size.Height * Math.Sin(otherObj.Direction.Angle);
-            var y24 = y21 + otherObj.Size.Height * Math.Cos(otherObj.Direction.Angle);
-
-            var rectangle1 = new[] { Tuple.Create(x11, y11, x13, y13), Tuple.Create(x11, y11, x14, y14), Tuple.Create(x12, y12, x13, y13), Tuple.Create(x12, y12, x14, y14) };
-            var rectangle2 = new[] { Tuple.Create(x21, y21, x23, y23), Tuple.Create(x21, y21, x24, y24), Tuple.Create(x22, y22, x23, y23), Tuple.Create(x22, y22, x24, y24) };
-
-            foreach (var storona1 in rectangle1)
-                foreach (var storona2 in rectangle2)
-                    if (AreLinesIntersect(storona1.Item1, storona1.Item2, storona1.Item3, storona1.Item4, storona2.Item1, storona2.Item2, storona2.Item3, storona2.Item4))
-                        return true;
-
-            return false;
+        private static Tuple<double, double, double, double>[] GetSides(double[] tops)
+        {
+            return new[] { Tuple.Create(tops[0], tops[1], tops[4], tops[5]), Tuple.Create(tops[0], tops[1], tops[6], tops[7]), Tuple.Create(tops[2], tops[3], tops[4], tops[5]), Tuple.Create(tops[2], tops[3], tops[6], tops[7]) };
         }
 
         private static bool AreLinesIntersect(double x1, double y1, double x2, double y2, double x3, double y3, double x4, double y4)
